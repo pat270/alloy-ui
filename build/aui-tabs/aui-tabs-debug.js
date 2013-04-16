@@ -550,11 +550,21 @@ var TabView = A.Component.create(
 				var newTab = event.newVal;
 
 				if (newTab) {
+					var newTabAnchor = newTab.get(CONTENT_BOX).one('a');
+					var newTabText = newTabAnchor.attr('innerText');
+
+					newTabAnchor.attr('innerHTML', '<strong>' + newTabText + '</strong>');
+
 					newTab.set('active', true);
 				}
 
 				if (newTab != oldTab) {
 					if (oldTab) {
+						var oldTabAnchor = oldTab.get(CONTENT_BOX).one('a');
+						var oldTabText = oldTabAnchor.attr('innerText');
+
+						oldTabAnchor.attr('innerHTML', oldTabText);
+						
 						oldTab.set('active', false);
 					}
 				}
@@ -970,5 +980,5 @@ A.namespace('Plugin').TabViewMenu = TabViewMenu;
 }, '@VERSION@' ,{requires:['aui-component','aui-state-interaction','aui-tabs-base','aui-overlay-context','plugin']});
 
 
-AUI.add('aui-tabs', function(A){}, '@VERSION@' ,{skinnable:true, use:['aui-tabs-base','aui-tabs-menu-plugin']});
+AUI.add('aui-tabs', function(A){}, '@VERSION@' ,{use:['aui-tabs-base','aui-tabs-menu-plugin'], skinnable:true});
 
