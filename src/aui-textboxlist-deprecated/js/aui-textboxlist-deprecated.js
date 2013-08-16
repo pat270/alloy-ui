@@ -46,6 +46,7 @@ var Lang = A.Lang,
 	CSS_ENTRY_HOLDER = getClassName(ENTRY_NAME, 'holder'),
 	CSS_ENTRY_TEXT = getClassName(ENTRY_NAME, 'text'),
 	CSS_ENTRY_ITEM = getClassName(ENTRY_NAME, 'item'),
+	CSS_UNSTYLED = 'unstyled',
 
 	CSS_INPUT_CONTAINER = getClassName(NAME, 'input','container'),
 
@@ -56,7 +57,7 @@ var Lang = A.Lang,
 
 	TPL_ENTRY_CLOSE = '<span class="' + [CSS_ICON, CSS_ICON_CLOSE, CSS_ENTRY_CLOSE].join(' ') + '"></span>',
 	TPL_ENTRY_TEXT = '<span class="' + CSS_ENTRY_TEXT + '"></span>',
-	TPL_ENTRY_HOLDER = '<ul class="' + [CSS_CLEARFIX, CSS_ENTRY_HOLDER].join(' ') + '"></ul>',
+	TPL_ENTRY_HOLDER = '<ul class="' + [CSS_CLEARFIX, CSS_ENTRY_HOLDER, CSS_UNSTYLED].join(' ') + '"></ul>',
 
 	TPL_INPUT_CONTAINER = '<li class="' + CSS_INPUT_CONTAINER + '"></li>';
 
