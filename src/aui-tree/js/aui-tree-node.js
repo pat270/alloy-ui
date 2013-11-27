@@ -109,8 +109,7 @@ var Lang = A.Lang,
  * @class A.TreeNode
  * @extends Base
  * @uses A.TreeData
- * @param config {Object} Object literal specifying widget configuration
- *     properties.
+ * @param config {Object} Object literal specifying widget configuration properties.
  * @constructor
  */
 var TreeNode = A.Component.create({
@@ -1077,8 +1076,7 @@ var TREE_NODE_IO = 'tree-node-io';
  * @class A.TreeNodeIO
  * @extends A.TreeNode
  * @uses A.TreeViewPaginator, A.TreeViewIO
- * @param config {Object} Object literal specifying widget configuration
- *     properties.
+ * @param config {Object} Object literal specifying widget configuration properties.
  * @constructor
  */
 var TreeNodeIO = A.Component.create({
@@ -1234,8 +1232,8 @@ var TreeNodeIO = A.Component.create({
         },
 
         /**
-         * If not specified on the TreeNode some attributes are inherited from
-         * the ownerTree by this method.
+         * If not specified on the TreeNode some attributes are inherited from the
+         * ownerTree by this method.
          *
          * @method _inheritOwnerTreeAttrs
          * @protected
@@ -1267,8 +1265,7 @@ var TreeNodeIO = A.Component.create({
 
                     var paginator = A.clone(ownerTreePaginator);
 
-                    // make sure we are not using the same element passed to the
-                    // ownerTree on the TreeNode
+                    // make sure we are not using the same element passed to the ownerTree on the TreeNode
                     if (paginator && paginator.element) {
                         paginator.element = ownerTreePaginator.element.clone();
                     }
@@ -1321,8 +1318,7 @@ var CHECKBOX = 'checkbox',
  *
  * @class A.TreeNodeCheck
  * @extends A.TreeNodeIO
- * @param config {Object} Object literal specifying widget configuration
- *     properties.
+ * @param config {Object} Object literal specifying widget configuration properties.
  * @constructor
  */
 var TreeNodeCheck = A.Component.create({
@@ -1592,13 +1588,11 @@ var CHILD = 'child',
  *
  * - Widget Lifecycle (initializer, renderUI, bindUI, syncUI, destructor)
  * - 3 states checkbox support
- * - Automatic check/uncheck the parent status based on the children checked
- *   status
+ * - Automatic check/uncheck the parent status based on the children checked status
  *
  * @class A.TreeNodeTask
  * @extends A.TreeNodeCheck
- * @param config {Object} Object literal specifying widget configuration
- *     properties.
+ * @param config {Object} Object literal specifying widget configuration properties.
  * @constructor
  */
 var TreeNodeTask = A.Component.create({
@@ -1610,6 +1604,13 @@ var TreeNodeTask = A.Component.create({
      * @static
      */
     NAME: TREE_NODE_TASK,
+
+    ATTRS: {
+        selectAllChildren: {
+            value: true,
+            validator: isBoolean
+        }
+    },
 
     EXTENDS: A.TreeNodeCheck,
 
@@ -1628,7 +1629,7 @@ var TreeNodeTask = A.Component.create({
 
             originalTarget = originalTarget || instance;
 
-            if (!instance.isLeaf()) {
+            if (!instance.isLeaf() && instance.get('selectAllChildren')) {
                 instance.eachChildren(function(child) {
                     if (isTreeNodeTask(child)) {
                         child.check(originalTarget);
@@ -1663,7 +1664,7 @@ var TreeNodeTask = A.Component.create({
 
             originalTarget = originalTarget || instance;
 
-            if (!instance.isLeaf()) {
+            if (!instance.isLeaf() && instance.get('selectAllChildren')) {
                 instance.eachChildren(function(child) {
                     if (child instanceof A.TreeNodeCheck) {
                         child.uncheck(originalTarget);
@@ -1706,13 +1707,11 @@ var TREE_NODE_RADIO = 'tree-node-radio',
  *
  * - Widget Lifecycle (initializer, renderUI, bindUI, syncUI, destructor)
  * - 3 states checkbox support
- * - Automatic check/uncheck the parent status based on the children checked
- *   status
+ * - Automatic check/uncheck the parent status based on the children checked status
  *
  * @class A.TreeNodeRadio
  * @extends A.TreeNodeTask
- * @param config {Object} Object literal specifying widget configuration
- *     properties.
+ * @param config {Object} Object literal specifying widget configuration properties.
  * @constructor
  */
 var TreeNodeRadio = A.Component.create({
@@ -1761,6 +1760,10 @@ var TreeNodeRadio = A.Component.create({
                     iconUncheck: CSS_ICON_OK_SIGN
                 }
             }
+        },
+        selectAllChildren: {
+            value: false,
+            validator: isBoolean
         }
     },
 
@@ -1790,7 +1793,9 @@ var TreeNodeRadio = A.Component.create({
         check: function() {
             var instance = this;
 
-            instance._uncheckNodesRadio();
+            if (instance.get('selectAllChildren') === false) {
+                instance._uncheckNodesRadio();
+            }
 
             A.TreeNodeRadio.superclass.check.apply(this, arguments);
         },
