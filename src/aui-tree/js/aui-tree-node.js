@@ -109,7 +109,7 @@ var Lang = A.Lang,
  * @class A.TreeNode
  * @extends Base
  * @uses A.TreeData
- * @param config {Object} Object literal specifying widget configuration
+ * @param {Object} config Object literal specifying widget configuration
  *     properties.
  * @constructor
  */
@@ -1077,7 +1077,7 @@ var TREE_NODE_IO = 'tree-node-io';
  * @class A.TreeNodeIO
  * @extends A.TreeNode
  * @uses A.TreeViewPaginator, A.TreeViewIO
- * @param config {Object} Object literal specifying widget configuration
+ * @param {Object} config Object literal specifying widget configuration
  *     properties.
  * @constructor
  */
@@ -1321,7 +1321,7 @@ var CHECKBOX = 'checkbox',
  *
  * @class A.TreeNodeCheck
  * @extends A.TreeNodeIO
- * @param config {Object} Object literal specifying widget configuration
+ * @param {Object} config Object literal specifying widget configuration
  *     properties.
  * @constructor
  */
@@ -1597,7 +1597,7 @@ var CHILD = 'child',
  *
  * @class A.TreeNodeTask
  * @extends A.TreeNodeCheck
- * @param config {Object} Object literal specifying widget configuration
+ * @param {Object} config Object literal specifying widget configuration
  *     properties.
  * @constructor
  */
@@ -1711,7 +1711,7 @@ var TREE_NODE_RADIO = 'tree-node-radio',
  *
  * @class A.TreeNodeRadio
  * @extends A.TreeNodeTask
- * @param config {Object} Object literal specifying widget configuration
+ * @param {Object} config Object literal specifying widget configuration
  *     properties.
  * @constructor
  */
@@ -1719,7 +1719,7 @@ var TreeNodeRadio = A.Component.create({
     /**
      * Static property provides a string to identify the class.
      *
-     * @property TreeNodeRadio.NAME
+     * @property NAME
      * @type String
      * @static
      */
@@ -1729,7 +1729,7 @@ var TreeNodeRadio = A.Component.create({
      * Static property used to define the default attribute
      * configuration for the TreeNodeRadio.
      *
-     * @property TreeNodeRadio.ATTRS
+     * @property ATTRS
      * @type Object
      * @static
      */
@@ -1764,7 +1764,7 @@ var TreeNodeRadio = A.Component.create({
         }
     },
 
-    EXTENDS: A.TreeNodeTask,
+    EXTENDS: A.TreeNodeCheck,
 
     prototype: {
 
@@ -1853,7 +1853,7 @@ A.TreeNodeRadio = TreeNodeRadio;
  * ```
  *
  * @for TreeNode
- * @property A.TreeNode.nodeTypes
+ * @property nodeTypes
  * @type Object
  */
 A.TreeNode.nodeTypes = {
