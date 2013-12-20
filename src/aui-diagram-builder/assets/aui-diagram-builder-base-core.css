@@ -31,7 +31,6 @@
 }
 .diagram-builder .tabbable {
     margin-left: 10px;
-    position: absolute;
     width: 270px;
 }
 .diagram-builder .tab-pane {
@@ -49,6 +48,7 @@
 }
 .diagram-builder-content-container {
     padding-left: 280px;
+    margin-top: -600px;
 }
 .diagram-node {
     cursor: move;
