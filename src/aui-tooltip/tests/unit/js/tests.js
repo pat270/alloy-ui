@@ -218,10 +218,17 @@ YUI.add('aui-tooltip-tests', function(Y) {
             tooltipLeft.once('mouseout', function(event) {
                 setTimeout(function() {
                     test.resume(function() {
+                        if (window.getComputedStyle) {
+                            condition = ((tooltipLeft === null) || (tooltipLeft.getStyle('zIndex') < 0));
+                        }
+                        else {
+                            condition = ((tooltipLeft === null) || (tooltipLeft._node.currentStyle.zIndex < 0));
+                        }
+
                         Y.Assert.isTrue(
-                            ((Y.one('.tooltip.left') === null) || (Y.one('.tooltip.left').getStyle('zIndex') < 0)),
+                            condition,
                             '.tooltip.left does not have a z-index less than 0');
-                    })
+                    });
                 }, 800);
             });
 
