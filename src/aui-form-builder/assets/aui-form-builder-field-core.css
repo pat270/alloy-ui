@@ -3,7 +3,7 @@
     padding: 0;
 }
 
-.form-builder-field .field-checkbox, .form-builder-field .field-radio {
+.form-builder-content .form-builder-field .field-checkbox, .form-builder-content .form-builder-field .field-radio {
     float: left;
     margin-right: 5px;
 }
