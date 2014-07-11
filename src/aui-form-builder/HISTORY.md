@@ -8,6 +8,7 @@ No registries yet.
 
 ## [2.5.0](https://github.com/liferay/alloy-ui/releases/tag/2.5.0)
 
+* [AUI-1518](https://issues.liferay.com/browse/AUI-1518) Form Builder Checkbox/Radio styles easily overridden
 * [AUI-1208](https://issues.liferay.com/browse/AUI-1346) Cannot clone hiddenAttributes in Form Builder
 * [AUI-1208](https://issues.liferay.com/browse/AUI-1208) Cloned fields displaying hidden attributes
 * [AUI-1163](https://issues.liferay.com/browse/AUI-1163) Remove unnecessary constants
