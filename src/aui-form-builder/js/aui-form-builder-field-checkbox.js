@@ -8,6 +8,7 @@
 var L = A.Lang,
 
     AArray = A.Array,
+    AEscape = A.Escape,
 
     getCN = A.getClassName,
 
@@ -141,12 +142,12 @@ var FormBuilderCheckBoxField = A.Component.create({
                         attributeName: 'predefinedValue',
                         editor: new A.RadioCellEditor({
                             options: {
-                                'true': strings['yes'],
-                                'false': strings['no']
+                                'true': strings.yes,
+                                'false': strings.no
                             }
                         }),
                         formatter: A.bind(instance._booleanFormatter, instance),
-                        name: strings['predefinedValue']
+                        name: strings.predefinedValue
                     };
                 }
             });
@@ -167,10 +168,10 @@ var FormBuilderCheckBoxField = A.Component.create({
             return L.sub(
                 instance.get('template'), {
                     checked: checked ? 'checked="checked"' : '',
-                    id: instance.get('id'),
-                    label: instance.get('label'),
-                    name: instance.get('name'),
-                    value: instance.get('predefinedValue')
+                    id: AEscape.html(instance.get('id')),
+                    label: AEscape.html(instance.get('label')),
+                    name: AEscape.html(instance.get('name')),
+                    value: AEscape.html(instance.get('predefinedValue'))
                 }
             );
         },
@@ -200,4 +201,4 @@ var FormBuilderCheckBoxField = A.Component.create({
 
 A.FormBuilderCheckBoxField = FormBuilderCheckBoxField;
 
-A.FormBuilder.types.checkbox = A.FormBuilderCheckBoxField;
+A.FormBuilderField.types.checkbox = A.FormBuilderCheckBoxField;

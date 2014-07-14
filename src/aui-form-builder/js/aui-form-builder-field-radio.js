@@ -7,6 +7,8 @@
 
 var L = A.Lang,
 
+    AEscape = A.Escape,
+
     getCN = A.getClassName,
 
     CSS_FIELD = getCN('field'),
@@ -140,7 +142,7 @@ var FormBuilderRadioField = A.Component.create({
                 predefinedValue = instance.get('predefinedValue'),
                 templateNode = instance.get('templateNode');
 
-            A.each(val, function(item, index, collection) {
+            A.each(val, function(item) {
                 var checked = A.Array.indexOf(predefinedValue, item.value) > -1;
 
                 buffer.push(
@@ -148,10 +150,10 @@ var FormBuilderRadioField = A.Component.create({
                         TPL_RADIO, {
                             checked: checked ? 'checked="checked"' : '',
                             disabled: instance.get('disabled') ? 'disabled="disabled"' : '',
-                            id: instance.get('id') + counter++,
-                            label: item.label,
-                            name: instance.get('name'),
-                            value: item.value
+                            id: AEscape.html(instance.get('id') + counter++),
+                            label: AEscape.html(item.label),
+                            name: AEscape.html(instance.get('name')),
+                            value: AEscape.html(item.value)
                         }
                     )
                 );
@@ -189,7 +191,7 @@ var FormBuilderRadioField = A.Component.create({
 
             optionNodes.set('checked', false);
 
-            optionNodes.all('input[value="' + val + '"]').set('checked', true);
+            optionNodes.all('input[value="' + AEscape.html(val) + '"]').set('checked', true);
         },
 
         /**
@@ -216,4 +218,4 @@ var FormBuilderRadioField = A.Component.create({
 
 A.FormBuilderRadioField = FormBuilderRadioField;
 
-A.FormBuilder.types.radio = A.FormBuilderRadioField;
+A.FormBuilderField.types.radio = A.FormBuilderRadioField;

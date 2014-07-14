@@ -1,50 +1,76 @@
-.image-viewer, .image-viewer-control.carousel-control {
-    position: fixed;
-    z-index: 3000;
-}
-.image-viewer-control {
-    top: 50%;
-    margin-top: -20px;
-}
-.image-viewer.well {
-    padding: 0;
-}
-.image-viewer-close {
-    color: #fff;
-    font-size: 30px;
-    opacity: 0.5;
-    position: fixed;
-    right: 20px;
-    top: 10px;
-    z-index: 3000;
-}
-.image-viewer-close:hover {
-    color: #fff;
-    opacity: 1;
-}
-.image-viewer-hidden, .image-viewer-loading .yui3-widget-ft {
-    display: none;
-}
-.image-viewer-bd, .image-viewer .yui3-widget-ft {
-    background: #fff;
-    padding: 5px;
-    width: 16px;
-}
-.image-viewer-caption, .image-viewer-info {
-    margin: 0;
+.image-viewer-base .image-viewer-base-image-list {
+    text-align: center;
     overflow: hidden;
-    text-overflow: ellipsis;
+    width: 100%;
+}
+
+.image-viewer-base .image-viewer-base-image-container {
+    display: none;
+    height: 100%;
+    width: 100%;
+}
+
+.image-viewer-base .image-viewer-base-image-container.image-viewer-base-current-image {
+    display: inline-block;
+}
+
+.image-viewer-base .image-viewer-base-content {
+    position: relative;
+    text-align: center;
     white-space: nowrap;
 }
-.image-viewer-caption {
-    color: #222;
+
+.image-viewer-base .image-viewer-base-image {
+    max-height: 100%;
+    max-width: 100%;
+    vertical-align: middle;
 }
-.image-viewer-info {
-    color: #777;
+
+.image-viewer-base .image-viewer-base-loading-icon {
+    display: none;
 }
-.image-viewer-loader {
-    visibility: hidden;
+
+.image-viewer-base .image-viewer-base-loading .image-viewer-base-loading-icon {
+    display: inline-block;
 }
-.ie6 .image-viewer-close {
+
+.image-viewer-base .image-viewer-base-loading .image-viewer-base-image {
+    display: none;
+}
+
+.image-viewer-base .image-viewer-base-control {
+    color: #000;
+    padding: 5px;
+}
+
+.image-viewer-base .image-viewer-base-control .glyphicon {
+    height: 14px;
+    width: 14px;
+}
+
+.image-viewer-base .image-viewer-base-control-left,
+.image-viewer-base .image-viewer-base-control-right {
+    bottom: 0;
+    top: 0;
     position: absolute;
+    z-index: 1;
+}
+
+.image-viewer-base .image-viewer-base-control-left {
+    left: 0;
+}
+
+.image-viewer-base .image-viewer-base-control-right {
+    right: 0;
+}
+
+.image-viewer-base .image-viewer-base-control:hover {
+    color: #bbb;
+}
+
+.widget-swipe .image-viewer-base-image-container,
+.widget-swipe .image-viewer-base-image-container.image-viewer-base-current-image {
+    display: inline-block;
+    margin: 0 3px;
+    width: 100%;
 }

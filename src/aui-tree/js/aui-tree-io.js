@@ -22,7 +22,7 @@ var Lang = A.Lang,
  * @constructor
  */
 
-function TreeViewIO(config) {
+function TreeViewIO() {
     var instance = this;
 
     instance.publish(
@@ -72,6 +72,28 @@ TreeViewIO.prototype = {
         instance.publish(
 
         );
+    },
+
+    /**
+     * Create nodes.
+     *
+     * @method createNodes
+     * @param nodes
+     */
+    createNodes: function(nodes) {
+        var instance = this,
+            paginator = instance.get('paginator');
+
+        A.Array.each(A.Array(nodes), function(node) {
+            var childrenLength = instance.getChildrenLength(),
+                newNode = instance.createNode(node);
+
+            if (paginator && paginator.total > childrenLength) {
+                instance.appendChild(newNode);
+            }
+        });
+
+        instance._syncPaginatorUI(nodes);
     },
 
     /**
@@ -191,7 +213,7 @@ TreeViewIO.prototype = {
      * @param event
      * @protected
      */
-    _onIOSuccessDefault: function(event) {
+    _onIOSuccessDefault: function() {
         var instance = this;
 
         var ownerTree = instance.get('ownerTree');

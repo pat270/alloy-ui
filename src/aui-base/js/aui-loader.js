@@ -49,6 +49,24 @@ Y.mix(YUI.Env[Y.version].modules, {
             "aui-component"
         ]
     },
+    "aui-affix": {
+        "requires": [
+            "base",
+            "node-screen",
+            "aui-node"
+        ]
+    },
+    "aui-alert": {
+        "requires": [
+            "timers",
+            "widget",
+            "widget-stdmod",
+            "aui-classnamemanager",
+            "aui-widget-cssclass",
+            "aui-widget-transition"
+        ],
+        "skinnable": true
+    },
     "aui-aria": {
         "requires": [
             "plugin",
@@ -96,7 +114,7 @@ Y.mix(YUI.Env[Y.version].modules, {
     "aui-base-html5-shiv": {
         "condition": {
             "name": "aui-base-html5-shiv",
-            "trigger": "aui-base",
+            "trigger": "node-base",
             "ua": "ie"
         }
     },
@@ -114,7 +132,8 @@ Y.mix(YUI.Env[Y.version].modules, {
             "aui-component",
             "aui-widget-cssclass",
             "aui-widget-toggle"
-        ]
+        ],
+        "skinnable": true
     },
     "aui-button-search-cancel": {
         "requires": [
@@ -122,6 +141,7 @@ Y.mix(YUI.Env[Y.version].modules, {
             "base",
             "base-build",
             "event-focus",
+            "event-move",
             "event-resize",
             "node-screen",
             "node-event-delegate",
@@ -134,9 +154,29 @@ Y.mix(YUI.Env[Y.version].modules, {
         "requires": [
             "anim",
             "node-event-delegate",
-            "aui-component"
+            "aui-image-viewer-base",
+            "aui-image-viewer-slideshow"
         ],
         "skinnable": true
+    },
+    "aui-carousel-swipe": {
+        "requires": [
+            "aui-carousel",
+            "aui-widget-swipe",
+            "base-build"
+        ],
+        "skinnable": true
+    },
+    "aui-carousel-touch": {
+        "condition": {
+            "name": "aui-carousel-touch",
+            "trigger": "aui-carousel",
+            "ua": "touchEnabled"
+        },
+        "requires": [
+            "aui-carousel-swipe",
+            "base-build"
+        ]
     },
     "aui-char-counter": {
         "requires": [
@@ -194,6 +234,9 @@ Y.mix(YUI.Env[Y.version].modules, {
             "widget-base"
         ]
     },
+    "aui-css": {
+        "type": "css"
+    },
     "aui-datatable": {
         "use": [
             "aui-datatable-edit",
@@ -202,16 +245,59 @@ Y.mix(YUI.Env[Y.version].modules, {
             "aui-datatable-property-list"
         ]
     },
-    "aui-datatable-core": {
+    "aui-datatable-base-cell-editor": {
         "requires": [
+            "datatable-base",
+            "overlay"
+        ],
+        "skinnable": true
+    },
+    "aui-datatable-base-options-cell-editor": {
+        "requires": [
+            "aui-datatable-base-cell-editor",
+            "escape"
+        ]
+    },
+    "aui-datatable-body": {
+        "requires": [
+            "aui-classnamemanager",
             "datatable-base",
             "event-key",
             "aui-event-base"
         ],
         "skinnable": true
     },
-    "aui-datatable-edit": {
+    "aui-datatable-cell-editor-support": {
         "requires": [
+            "datatable-base"
+        ]
+    },
+    "aui-datatable-checkbox-cell-editor": {
+        "requires": [
+            "aui-datatable-base-options-cell-editor"
+        ]
+    },
+    "aui-datatable-core": {
+        "requires": [
+            "aui-datatable-body",
+            "datatable-base",
+            "event-key",
+            "aui-event-base"
+        ],
+        "skinnable": true
+    },
+    "aui-datatable-date-cell-editor": {
+        "requires": [
+            "aui-datatable-base-options-cell-editor"
+        ]
+    },
+    "aui-datatable-dropdown-cell-editor": {
+        "requires": [
+            "aui-datatable-base-options-cell-editor"
+        ]
+    },
+    "aui-datatable-edit": {
+        "use": [
             "datatable-base",
             "calendar",
             "overlay",
@@ -219,9 +305,17 @@ Y.mix(YUI.Env[Y.version].modules, {
             "aui-datatype",
             "aui-toolbar",
             "aui-form-validator",
-            "aui-datatable-core"
-        ],
-        "skinnable": true
+            "aui-datatable-base-cell-editor",
+            "aui-datatable-base-options-cell-editor",
+            "aui-datatable-cell-editor-support",
+            "aui-datatable-core",
+            "aui-datatable-checkbox-cell-editor",
+            "aui-datatable-date-cell-editor",
+            "aui-datatable-dropdown-cell-editor",
+            "aui-datatable-radio-cell-editor",
+            "aui-datatable-text-cell-editor",
+            "aui-datatable-text-area-cell-editor"
+        ]
     },
     "aui-datatable-highlight": {
         "requires": [
@@ -242,11 +336,26 @@ Y.mix(YUI.Env[Y.version].modules, {
         ],
         "skinnable": true
     },
+    "aui-datatable-radio-cell-editor": {
+        "requires": [
+            "aui-datatable-base-options-cell-editor"
+        ]
+    },
     "aui-datatable-selection": {
         "requires": [
             "aui-datatable-core"
         ],
         "skinnable": true
+    },
+    "aui-datatable-text-area-cell-editor": {
+        "requires": [
+            "aui-datatable-base-options-cell-editor"
+        ]
+    },
+    "aui-datatable-text-cell-editor": {
+        "requires": [
+            "aui-datatable-base-options-cell-editor"
+        ]
     },
     "aui-datatype": {
         "requires": [
@@ -296,18 +405,19 @@ Y.mix(YUI.Env[Y.version].modules, {
     },
     "aui-debounce": {},
     "aui-diagram-builder": {
-        "use": [
-            "aui-diagram-builder-base",
-            "aui-diagram-builder-connector",
-            "aui-diagram-builder-impl"
-        ]
-    },
-    "aui-diagram-builder-base": {
         "requires": [
-            "dd",
-            "collection",
-            "aui-tabview",
-            "aui-datatable-property-list"
+            "overlay",
+            "aui-map",
+            "aui-property-builder",
+            "aui-diagram-builder-connector",
+            "aui-property-builder-settings",
+            "aui-diagram-node-condition",
+            "aui-diagram-node-end",
+            "aui-diagram-node-fork",
+            "aui-diagram-node-join",
+            "aui-diagram-node-start",
+            "aui-diagram-node-state",
+            "aui-diagram-node-task"
         ],
         "skinnable": true
     },
@@ -321,20 +431,71 @@ Y.mix(YUI.Env[Y.version].modules, {
         ],
         "skinnable": true
     },
-    "aui-diagram-builder-impl": {
+    "aui-diagram-node": {
         "requires": [
             "overlay",
-            "aui-map",
-            "aui-diagram-builder-base",
-            "aui-diagram-builder-connector"
+            "aui-diagram-node-manager-base"
+        ]
+    },
+    "aui-diagram-node-condition": {
+        "requires": [
+            "aui-diagram-node-state"
+        ]
+    },
+    "aui-diagram-node-end": {
+        "requires": [
+            "aui-diagram-node-state"
+        ]
+    },
+    "aui-diagram-node-fork": {
+        "requires": [
+            "aui-diagram-node-state"
+        ]
+    },
+    "aui-diagram-node-join": {
+        "requires": [
+            "aui-diagram-node-state"
+        ]
+    },
+    "aui-diagram-node-manager-base": {
+        "requires": [
+            "base"
+        ]
+    },
+    "aui-diagram-node-start": {
+        "requires": [
+            "aui-diagram-node-state"
+        ]
+    },
+    "aui-diagram-node-state": {
+        "requires": [
+            "aui-diagram-node"
+        ]
+    },
+    "aui-diagram-node-task": {
+        "requires": [
+            "aui-diagram-node-state"
+        ]
+    },
+    "aui-dropdown": {
+        "requires": [
+            "event-delegate",
+            "event-key",
+            "event-outside",
+            "node-focusmanager",
+            "widget",
+            "widget-stack",
+            "aui-classnamemanager",
+            "aui-node",
+            "aui-widget-cssclass",
+            "aui-widget-toggle",
+            "aui-widget-trigger"
         ],
         "skinnable": true
     },
     "aui-event": {
         "use": [
-            "aui-event-base",
-            "aui-event-delegate-change",
-            "aui-event-delegate-submit"
+            "aui-event-base"
         ]
     },
     "aui-event-base": {
@@ -343,6 +504,11 @@ Y.mix(YUI.Env[Y.version].modules, {
         ]
     },
     "aui-event-delegate-change": {
+        "condition": {
+            "name": "aui-event-delegate-change",
+            "trigger": "event-base-ie",
+            "ua": "ie"
+        },
         "requires": [
             "aui-event-base",
             "event-delegate",
@@ -350,6 +516,11 @@ Y.mix(YUI.Env[Y.version].modules, {
         ]
     },
     "aui-event-delegate-submit": {
+        "condition": {
+            "name": "aui-event-delegate-submit",
+            "trigger": "event-base-ie",
+            "ua": "ie"
+        },
         "requires": [
             "aui-event-base",
             "event-delegate",
@@ -374,7 +545,7 @@ Y.mix(YUI.Env[Y.version].modules, {
 
     return !testFeature('event', 'input');
 },
-            "trigger": "aui-event"
+            "trigger": "aui-event-base"
         },
         "requires": [
             "aui-event-base",
@@ -384,10 +555,11 @@ Y.mix(YUI.Env[Y.version].modules, {
         ]
     },
     "aui-form-builder": {
-        "skinnable": true,
-        "use": [
-            "aui-form-builder-base",
-            "aui-form-builder-field-base",
+        "requires": [
+            "aui-button",
+            "aui-collection",
+            "aui-form-builder-available-field",
+            "aui-form-builder-field",
             "aui-form-builder-field-button",
             "aui-form-builder-field-checkbox",
             "aui-form-builder-field-fieldset",
@@ -396,71 +568,74 @@ Y.mix(YUI.Env[Y.version].modules, {
             "aui-form-builder-field-radio",
             "aui-form-builder-field-select",
             "aui-form-builder-field-text",
-            "aui-form-builder-field-textarea"
-        ]
-    },
-    "aui-form-builder-base": {
-        "requires": [
-            "escape",
-            "transition",
-            "aui-button",
-            "aui-collection",
-            "aui-diagram-builder-base",
+            "aui-form-builder-field-textarea",
+            "aui-property-builder",
+            "aui-property-builder-settings",
             "aui-sortable-list",
-            "aui-tabview"
+            "aui-tabview",
+            "aui-tooltip-base",
+            "escape",
+            "transition"
         ],
         "skinnable": true
     },
-    "aui-form-builder-field-base": {
+    "aui-form-builder-available-field": {
+        "requires": [
+            "aui-property-builder-available-field"
+        ]
+    },
+    "aui-form-builder-field": {
         "requires": [
             "panel",
-            "aui-datatype"
+            "aui-datatype",
+            "aui-datatable-edit",
+            "aui-property-builder-field-support"
         ],
         "skinnable": true
     },
     "aui-form-builder-field-button": {
         "requires": [
-            "aui-form-builder-field-base"
+            "aui-form-builder-field"
         ]
     },
     "aui-form-builder-field-checkbox": {
         "requires": [
-            "aui-form-builder-field-base"
+            "aui-form-builder-field"
         ]
     },
     "aui-form-builder-field-fieldset": {
         "requires": [
-            "aui-form-builder-field-base"
+            "aui-form-builder-field"
         ]
     },
     "aui-form-builder-field-file-upload": {
         "requires": [
-            "aui-form-builder-field-base"
+            "aui-form-builder-field"
         ]
     },
     "aui-form-builder-field-multiple-choice": {
         "requires": [
-            "aui-form-builder-field-base"
+            "aui-form-builder-field"
         ]
     },
     "aui-form-builder-field-radio": {
         "requires": [
-            "aui-form-builder-field-base"
+            "aui-form-builder-field"
         ]
     },
     "aui-form-builder-field-select": {
         "requires": [
-            "aui-form-builder-field-base"
+            "aui-form-builder-field"
         ]
     },
     "aui-form-builder-field-text": {
         "requires": [
-            "aui-form-builder-field-base"
+            "aui-form-builder-field"
         ]
     },
     "aui-form-builder-field-textarea": {
         "requires": [
-            "aui-form-builder-field-base"
+            "aui-form-builder-field"
         ]
     },
     "aui-form-validator": {
@@ -512,15 +687,7 @@ Y.mix(YUI.Env[Y.version].modules, {
         "skinnable": true
     },
     "aui-image-viewer": {
-        "use": [
-            "aui-image-viewer-base",
-            "aui-image-viewer-gallery",
-            "aui-image-viewer-media"
-        ]
-    },
-    "aui-image-viewer-base": {
         "requires": [
-            "anim",
             "widget",
             "widget-modality",
             "widget-position",
@@ -529,26 +696,71 @@ Y.mix(YUI.Env[Y.version].modules, {
             "widget-stack",
             "widget-stdmod",
             "aui-event",
+            "aui-image-viewer-base",
+            "aui-image-viewer-multiple",
+            "aui-image-viewer-slideshow",
             "aui-node-base",
             "aui-widget-cssclass",
             "aui-widget-toggle"
         ],
         "skinnable": true
     },
-    "aui-image-viewer-gallery": {
+    "aui-image-viewer-base": {
         "requires": [
-            "aui-image-viewer-base",
-            "aui-pagination",
-            "aui-toolbar"
+            "anim",
+            "aui-classnamemanager",
+            "aui-node",
+            "aui-widget-responsive",
+            "base-build",
+            "imageloader",
+            "node-base",
+            "widget"
         ],
         "skinnable": true
     },
     "aui-image-viewer-media": {
         "requires": [
             "plugin",
+            "aui-component",
+            "aui-image-viewer"
+        ]
+    },
+    "aui-image-viewer-multiple": {
+        "requires": [
+            "base-build",
+            "node-base",
+            "aui-classnamemanager",
+            "aui-image-viewer-base"
+        ],
+        "skinnable": true
+    },
+    "aui-image-viewer-multiple-swipe": {
+        "condition": {
+            "name": "aui-image-viewer-multiple-swipe",
+            "trigger": "aui-image-viewer-multiple",
+            "ua": "touchEnabled"
+        },
+        "requires": [
+            "aui-image-viewer-multiple",
+            "aui-image-viewer-swipe"
+        ]
+    },
+    "aui-image-viewer-slideshow": {
+        "requires": [
+            "node",
+            "aui-classnamemanager"
+        ]
+    },
+    "aui-image-viewer-swipe": {
+        "condition": {
+            "name": "aui-image-viewer-swipe",
+            "trigger": "aui-image-viewer-base",
+            "ua": "touchEnabled"
+        },
+        "requires": [
+            "event-resize",
             "aui-image-viewer-base",
-            "aui-pagination",
-            "aui-toolbar"
+            "aui-widget-swipe"
         ]
     },
     "aui-io": {
@@ -594,12 +806,25 @@ Y.mix(YUI.Env[Y.version].modules, {
             "widget-stdmod",
             "dd-plugin",
             "dd-constrain",
-            "resize-plugin",
             "timers",
             "aui-classnamemanager",
             "aui-widget-cssclass",
             "aui-widget-toggle",
             "aui-widget-toolbars"
+        ],
+        "skinnable": true
+    },
+    "aui-modal-resize": {
+        "condition": {
+            "name": "aui-modal-resize",
+            "test": function(A) {
+    return !A.UA.mobile;
+},
+            "trigger": "aui-modal"
+        },
+        "requires": [
+            "aui-modal",
+            "resize-plugin"
         ]
     },
     "aui-node": {
@@ -633,7 +858,8 @@ Y.mix(YUI.Env[Y.version].modules, {
             "aui-node",
             "aui-component",
             "widget-htmlparser"
-        ]
+        ],
+        "skinnable": true
     },
     "aui-palette": {
         "requires": [
@@ -658,6 +884,7 @@ Y.mix(YUI.Env[Y.version].modules, {
     },
     "aui-popover": {
         "requires": [
+            "event-resize",
             "widget",
             "widget-autohide",
             "widget-buttons",
@@ -675,14 +902,49 @@ Y.mix(YUI.Env[Y.version].modules, {
             "aui-widget-trigger",
             "aui-widget-position-align-suggestion",
             "aui-component",
-            "aui-node-base"
-        ]
+            "aui-node-base",
+            "event-resize"
+        ],
+        "skinnable": true
     },
     "aui-progressbar": {
         "requires": [
             "aui-node",
             "aui-component",
             "aui-aria"
+        ],
+        "skinnable": true
+    },
+    "aui-promise": {
+        "requires": [
+            "array-invoke",
+            "promise",
+            "oop"
+        ]
+    },
+    "aui-property-builder": {
+        "requires": [
+            "dd",
+            "collection",
+            "aui-property-builder-available-field",
+            "aui-property-builder-field-support",
+            "aui-property-builder-settings",
+            "aui-tabview"
+        ],
+        "skinnable": true
+    },
+    "aui-property-builder-available-field": {
+        "requires": [
+            "base",
+            "aui-component",
+            "aui-node"
+        ]
+    },
+    "aui-property-builder-field-support": {},
+    "aui-property-builder-settings": {
+        "requires": [
+            "aui-tabview",
+            "aui-datatable-property-list"
         ]
     },
     "aui-rating": {
@@ -784,6 +1046,13 @@ Y.mix(YUI.Env[Y.version].modules, {
         ],
         "skinnable": true
     },
+    "aui-scrollspy": {
+        "requires": [
+            "base-build",
+            "node-screen",
+            "aui-classnamemanager"
+        ]
+    },
     "aui-search": {
         "use": [
             "aui-search-tst"
@@ -831,12 +1100,57 @@ Y.mix(YUI.Env[Y.version].modules, {
             "aui-component"
         ]
     },
+    "aui-surface": {
+        "use": [
+            "aui-surface-app",
+            "aui-surface-screen"
+        ]
+    },
+    "aui-surface-app": {
+        "requires": [
+            "event-delegate",
+            "node-event-html5",
+            "aui-surface-base",
+            "aui-surface-screen",
+            "aui-surface-screen-route"
+        ]
+    },
+    "aui-surface-base": {
+        "requires": [
+            "base-build",
+            "node-style",
+            "timers",
+            "aui-debounce",
+            "aui-promise",
+            "aui-parse-content"
+        ]
+    },
+    "aui-surface-screen": {
+        "requires": [
+            "base-build"
+        ]
+    },
+    "aui-surface-screen-html": {
+        "requires": [
+            "io",
+            "aui-promise",
+            "aui-surface-screen",
+            "aui-url"
+        ]
+    },
+    "aui-surface-screen-route": {
+        "requires": [
+            "base-build"
+        ]
+    },
     "aui-tabview": {
         "requires": [
             "selector-css3",
             "tabview",
-            "aui-component"
-        ]
+            "aui-component",
+            "aui-widget-css"
+        ],
+        "skinnable": true
     },
     "aui-text-data-unicode": {
         "requires": [
@@ -850,8 +1164,7 @@ Y.mix(YUI.Env[Y.version].modules, {
     },
     "aui-timepicker": {
         "requires": [
-            "autocomplete-list",
-            "autocomplete-list-keys",
+            "autocomplete",
             "aui-datepicker-delegate",
             "aui-datepicker-popover"
         ],
@@ -883,7 +1196,8 @@ Y.mix(YUI.Env[Y.version].modules, {
             "aui-selector",
             "aui-event-base",
             "aui-node",
-            "aui-component"
+            "aui-component",
+            "event-tap"
         ],
         "skinnable": true
     },
@@ -910,6 +1224,7 @@ Y.mix(YUI.Env[Y.version].modules, {
     },
     "aui-tooltip-base": {
         "requires": [
+            "escape",
             "event-hover",
             "widget",
             "widget-autohide",
@@ -920,13 +1235,16 @@ Y.mix(YUI.Env[Y.version].modules, {
             "widget-stdmod",
             "aui-classnamemanager",
             "aui-component",
+            "aui-debounce",
             "aui-widget-cssclass",
             "aui-widget-toggle",
             "aui-widget-transition",
             "aui-widget-trigger",
             "aui-widget-position-align-suggestion",
-            "aui-node-base"
-        ]
+            "aui-node-base",
+            "event-resize"
+        ],
+        "skinnable": true
     },
     "aui-tooltip-delegate": {
         "requires": [
@@ -982,6 +1300,13 @@ Y.mix(YUI.Env[Y.version].modules, {
         ],
         "skinnable": true
     },
+    "aui-undo-redo": {
+        "requires": [
+            "base",
+            "base-build",
+            "promise"
+        ]
+    },
     "aui-url": {
         "requires": [
             "oop",
@@ -1026,6 +1351,20 @@ Y.mix(YUI.Env[Y.version].modules, {
             "widget-stdmod"
         ]
     },
+    "aui-widget-responsive": {
+        "requires": [
+            "event-resize",
+            "widget-base"
+        ]
+    },
+    "aui-widget-swipe": {
+        "requires": [
+            "classnamemanager",
+            "scrollview-base",
+            "scrollview-paginator",
+            "timers"
+        ]
+    },
     "aui-widget-toggle": {},
     "aui-widget-toolbars": {
         "requires": [
@@ -1044,4 +1383,4 @@ Y.mix(YUI.Env[Y.version].modules, {
         ]
     }
 });
-YUI.Env[Y.version].md5 = '8d2112cfec7c545d4f53ed15310ca2ed';
+YUI.Env[Y.version].md5 = '7ce28f44983ceb29d16c28e0760057e5';

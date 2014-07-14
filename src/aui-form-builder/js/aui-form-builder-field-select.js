@@ -7,14 +7,17 @@
 
 var L = A.Lang,
 
+    AEscape = A.Escape,
+
     getCN = A.getClassName,
 
+    CSS_FORM_CONTROL = getCN('form', 'control'),
     CSS_FORM_BUILDER_FIELD = getCN('form-builder-field'),
     CSS_FORM_BUILDER_FIELD_NODE = getCN('form-builder-field', 'node'),
 
     TPL_SELECT =
-        '<select id="{id}" class="' + [CSS_FORM_BUILDER_FIELD_NODE].join(' ') +
-        '" name="{name}" value="{value}"></select>';
+        '<select id="{id}" class="' + [CSS_FORM_BUILDER_FIELD_NODE, CSS_FORM_CONTROL]
+        .join(' ') + '" name="{name}" value="{value}"></select>';
 
 /**
  * A base class for `A.FormBuilderSelectField`.
@@ -111,10 +114,10 @@ var FormBuilderSelectField = A.Component.create({
 
             return L.sub(
                 instance.get('template'), {
-                    id: instance.get('id'),
-                    label: instance.get('label'),
-                    name: instance.get('name'),
-                    value: instance.get('predefinedValue')
+                    id: AEscape.html(instance.get('id')),
+                    label: AEscape.html(instance.get('label')),
+                    name: AEscape.html(instance.get('name')),
+                    value: AEscape.html(instance.get('predefinedValue'))
                 }
             );
         },
@@ -135,12 +138,12 @@ var FormBuilderSelectField = A.Component.create({
                 attributeName: 'multiple',
                 editor: new A.RadioCellEditor({
                     options: {
-                        'true': strings['yes'],
-                        'false': strings['no']
+                        'true': strings.yes,
+                        'false': strings.no
                     }
                 }),
                 formatter: A.bind(instance._booleanFormatter, instance),
-                name: strings['multiple']
+                name: strings.multiple
             });
 
             return model;
@@ -173,4 +176,4 @@ var FormBuilderSelectField = A.Component.create({
 
 A.FormBuilderSelectField = FormBuilderSelectField;
 
-A.FormBuilder.types.select = A.FormBuilderSelectField;
+A.FormBuilderField.types.select = A.FormBuilderSelectField;

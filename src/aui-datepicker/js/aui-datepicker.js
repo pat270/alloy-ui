@@ -297,6 +297,21 @@ A.mix(DatePickerBase.prototype, {
      */
     _setPanes: function(val) {
         return clamp(val, 1, 3);
+    },
+
+    /**
+     * Checks if the given dates are referencing the same
+     * day, month and year.
+     *
+     * @method _isSameDay
+     * @param date1
+     * @param date2
+     * @protected
+     */
+    _isSameDay: function(date1, date2) {
+        return date1.getDate() === date2.getDate() &&
+            date1.getMonth() === date2.getMonth() &&
+            date1.getFullYear() === date2.getFullYear();
     }
 }, true);
 

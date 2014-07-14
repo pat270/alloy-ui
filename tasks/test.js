@@ -1,89 +1,26 @@
-/*
- * Copyright (c) 2013, Liferay Inc. All rights reserved.
- * Code licensed under the BSD License:
- * https://github.com/liferay/alloy-ui/blob/master/LICENSE.md
- *
- * @author Zeno Rocha <zeno.rocha@liferay.com>
- * @author Eduardo Lundgren <eduardo.lundgren@liferay.com>
- */
+var gulp = require('gulp');
+var path = require('path');
+var spawn = require('spawn-local-bin');
 
-var TASK = {
-    name: 'test',
-    description: 'Run unit tests using Yogi'
-};
+var ROOT = path.join(__dirname, '..');
+var CWD = process.env.INIT_CWD;
 
-// -- Requires -----------------------------------------------------------------
-var async = require('async');
-var command = require('command');
+gulp.task('test', function(callback) {
+    var args = ['test'];
+    var cmd = 'yogi';
 
-// -- Globals ------------------------------------------------------------------
-var ROOT = process.cwd();
+    spawn(cmd, args, CWD)
+        .on('exit', callback);
+});
 
-module.exports = function(grunt) {
-    grunt.registerTask(TASK.name, TASK.description, function() {
-        var done = this.async();
+gulp.task('test-browser', function(callback) {
+    var args = [];
+    var cmd = 'yeti';
 
-        async.series([
-            function(mainCallback) {
-                    exports._setGruntConfig(mainCallback);
-            },
-            function(mainCallback) {
-                    exports._runYogi(mainCallback);
-            }],
-            function(err) {
-                if (err) {
-                    done(false);
-                }
-                else {
-                    done();
-                }
-            }
-        );
-    });
+    if (CWD === ROOT) {
+        CWD = path.join(CWD, 'src');
+    }
 
-    exports._setGruntConfig = function(mainCallback) {
-        var options = grunt.option.flags();
-
-        options.forEach(function(option) {
-            var key;
-            var value;
-            var valueIndex;
-
-            // Normalize option
-            option = option.replace(/^--(no-)?/, '');
-
-            valueIndex = option.lastIndexOf('=');
-
-            // String parameter
-            if (valueIndex !== -1) {
-                key = option.substring(0, valueIndex);
-                value = option.substring(valueIndex + 1);
-            }
-            // Boolean parameter
-            else {
-                key = option;
-                value = grunt.option(key);
-            }
-
-            grunt.config([TASK.name, key], value);
-        });
-
-        mainCallback();
-    };
-
-    exports._runYogi = function(mainCallback) {
-        var args = ['test'];
-
-        if (grunt.config([TASK.name, 'coverage'])) {
-            args.push('--coverage');
-        }
-
-        command.open(ROOT)
-            .on('stdout', command.writeTo(process.stdout))
-            .on('stderr', command.writeTo(process.stderr))
-            .exec('yogi', args)
-            .then(function() {
-                mainCallback(this.lastOutput.stdout);
-            });
-    };
-};
+    spawn(cmd, args, CWD)
+        .on('exit', callback);
+});

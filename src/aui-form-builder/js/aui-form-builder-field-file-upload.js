@@ -7,6 +7,8 @@
 
 var L = A.Lang,
 
+    AEscape = A.Escape,
+
     getCN = A.getClassName,
 
     CSS_FORM_BUILDER_FIELD = getCN('form-builder-field'),
@@ -89,10 +91,10 @@ var FormBuilderFileUploadField = A.Component.create({
 
             return L.sub(
                 instance.get('template'), {
-                    id: instance.get('id'),
-                    label: instance.get('label'),
-                    name: instance.get('name'),
-                    value: instance.get('predefinedValue')
+                    id: AEscape.html(instance.get('id')),
+                    label: AEscape.html(instance.get('label')),
+                    name: AEscape.html(instance.get('name')),
+                    value: AEscape.html(instance.get('predefinedValue'))
                 }
             );
         }
@@ -103,4 +105,4 @@ var FormBuilderFileUploadField = A.Component.create({
 
 A.FormBuilderFileUploadField = FormBuilderFileUploadField;
 
-A.FormBuilder.types.fileupload = A.FormBuilderFileUploadField;
+A.FormBuilderField.types.fileupload = A.FormBuilderFileUploadField;

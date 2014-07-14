@@ -301,76 +301,68 @@ YUI.add('aui-tree-tests', function(Y) {
         },
 
         // Tests: AUI-1141
-        'TreeNodeView created from HTML Markup should display icon-minus when expanded': function() {
+        'TreeNodeView created from HTML Markup should display glyphicon-minus when expanded': function() {
             var test = this;
-
-            var treeViewComponent = Y.one('#createFromHTMLMarkupTest');
+            var treeViewComponent = Y.one('#createFromHTMLMarkupTest').clone().appendTo(document.body);
 
             var treeView = new Y.TreeView({
                 boundingBox: treeViewComponent,
-                contentBox: Y.one('#createFromHTMLMarkupTest > ul'),
+                contentBox: treeViewComponent.one('> ul'),
                 type: 'normal'
             }).render();
 
-            var allHitareas = treeViewComponent.all('.tree-container .tree-hitarea');
+            var children = treeView.getChildren(true);
+            var lazyRenderTimeout = children.length * 50;
 
             setTimeout(function() {
                 test.resume(function() {
-                    Y.each(
-                        allHitareas,
-                        function(hitarea) {
-                            Y.Assert.isTrue(
-                                hitarea.hasClass('icon-minus'),
-                                hitarea + ' does not have class icon-minus.');
+                    Y.each(children, function(node) {
+                        if (node.get('rendered') && !node.get('leaf')) {
+                            var hitArea = node.get('hitAreaEl');
+
+                            hitArea.simulate('click');
+
+                            Y.Assert.isTrue(hitArea.hasClass('glyphicon-minus'), hitArea +
+                                ' does not have class glyphicon-minus');
                         }
-                    );
+                    }, true);
                 });
-            }, 800);
 
-            setTimeout(function() {
-                treeViewComponent.one('.tree-root-container .tree-hitarea').simulate('click');
+                treeViewComponent.remove();
+            }, lazyRenderTimeout);
 
-                Y.each(
-                    allHitareas,
-                    function(hitarea) {
-                        hitarea.simulate('click');
-                    }
-                );
-            });
-
-            test.wait(1000);
+            test.wait(lazyRenderTimeout);
         },
 
-        'TreeNodeView created from HTML Markup should display icon-plus when collapsed': function() {
+        'TreeNodeView created from HTML Markup should display glyphicon-plus when collapsed': function() {
             var test = this;
-            var treeViewComponent = Y.one('#createFromHTMLMarkupTest');
+            var treeViewComponent = Y.one('#createFromHTMLMarkupTest').clone().appendTo(document.body);
 
-            var allTreeHitareas = treeViewComponent.all('.tree-container .tree-hitarea');
-            var treeHitareasArray = [];
+            var treeView = new Y.TreeView({
+                boundingBox: treeViewComponent,
+                contentBox: treeViewComponent.one('> ul'),
+                type: 'normal'
+            }).render();
 
-            Y.each(
-                allTreeHitareas,
-                function(hitarea) {
-                    treeHitareasArray.push(hitarea);
-                }
-            );
+            var children = treeView.getChildren(true);
+            var lazyRenderTimeout = children.length * 50;
 
             setTimeout(function() {
                 test.resume(function() {
-                    for (var i = treeHitareasArray.length; i--;) {
-                        Y.Assert.isTrue(treeHitareasArray[i].hasClass('icon-plus'),
-                            treeHitareasArray[i] + ' does not have class icon-plus');
-                    }
+                    Y.each(children, function(node) {
+                        if (node.get('rendered') && !node.get('leaf')) {
+                            var hitArea = node.get('hitAreaEl');
+
+                            Y.Assert.isTrue(hitArea.hasClass('glyphicon-plus'), hitArea +
+                                ' does not have class glyphicon-plus');
+                        }
+                    }, true);
                 });
-            }, 800);
 
-            setTimeout(function() {
-                for (var i = treeHitareasArray.length; i--;) {
-                    treeHitareasArray[i].simulate('click');
-                }
-            });
+                treeViewComponent.remove();
+            }, lazyRenderTimeout);
 
-            test.wait(1000);
+            test.wait(lazyRenderTimeout);
         },
 
         // Tests: AUI-1156
@@ -435,23 +427,9 @@ YUI.add('aui-tree-tests', function(Y) {
              * assumming that server returned correct response. Clicking on hit area was proved to work above.
              */
             rootTreeNode.get('children')[0].ioSuccessHandler(null, null, {
-                responseText: '[ \
-                    { \
-                        "label": "subchild-one", \
-                        "leaf": true, \
-                        "type": "node" \
-                    }, \
-                    { \
-                        "label": "subchild-two", \
-                        "leaf": true, \
-                        "type": "node" \
-                    }, \
-                    { \
-                        "label": "subchild-three", \
-                        "leaf": true, \
-                        "type": "node" \
-                    } \
-                ]'
+                responseText: '[{"label": "subchild-one","leaf": true,"type": "node"},' +
+                    '{"label": "subchild-two","leaf": true,"type": "node"},' +
+                    '{"label": "subchild-three","leaf": true, "type": "node"}]'
             });
 
             paginatorLink = rootTreeNodeBB.one('a');
@@ -459,6 +437,87 @@ YUI.add('aui-tree-tests', function(Y) {
             Y.Assert.isTrue(
                 paginatorLink.hasClass('tree-node-paginator'),
                 'childTreeNode has a paginator link');
+        },
+
+        // Tests: AUI-1450
+        'TreeView should update getChildrenLength after clicking \'Load More\' link': function() {
+            var oldChildrenLength,
+                test = this,
+                treeView;
+
+            treeView = new Y.TreeView({
+                children: [
+                    {
+                        id: 'one'
+                    },
+                    {
+                        id: 'two'
+                    },
+                    {
+                        id: 'three'
+                    }
+                ],
+                io: 'assets/pages.html',
+                paginator: {
+                    limit: 3,
+                    offsetParam: 'start',
+                    start: 0,
+                    total: 5
+                },
+                type: 'io'
+            }).render();
+
+            oldChildrenLength = treeView.getChildrenLength();
+
+            treeView.after('ioRequestSuccess', function() {
+                test.resume(function() {
+                    Y.Assert.isTrue(treeView.getChildrenLength() !== oldChildrenLength);
+                });
+            });
+
+            treeView.get('boundingBox').one('.tree-node-paginator').simulate('click');
+
+            test.wait();
+        },
+
+        'TreeView should not show more nodes than what\'s defined in paginator.total': function() {
+            var paginator,
+                test = this,
+                treeView;
+
+            treeView = new Y.TreeView({
+                children: [
+                    {
+                        id: 'one'
+                    },
+                    {
+                        id: 'two'
+                    },
+                    {
+                        id: 'three'
+                    }
+                ],
+                io: 'assets/pages.html',
+                paginator: {
+                    limit: 3,
+                    offsetParam: 'start',
+                    start: 0,
+                    total: 5
+                },
+                type: 'io'
+            }).render();
+
+            paginator = treeView.get('paginator');
+
+            treeView.after('ioRequestSuccess', function() {
+                test.resume(function() {
+                    Y.Assert.isTrue(treeView.getChildrenLength() <= paginator.total);
+                });
+            });
+
+            treeView.get('boundingBox').one('.tree-node-paginator').simulate('click');
+
+            test.wait();
         }
     }));
 

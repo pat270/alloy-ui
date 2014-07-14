@@ -11,8 +11,7 @@ var Lang = A.Lang,
     isBoolean = Lang.isBoolean,
 
     _setCSSClockwiseRule = function(val) {
-        var instance = this,
-            i = 0,
+        var i = 0,
             len;
 
         if (isString(val)) {
@@ -43,7 +42,9 @@ var DataTableHighlight = A.Base.create(
     A.Plugin.Base, [], {
         CLASS_NAMES: null,
 
-        TPL_FRAME: '<div class="{overlay}">' + '<div class="{border}"></div>' + '<div class="{border}"></div>' + '<div class="{border}"></div>' + '<div class="{border}"></div>' + '</div>',
+        TPL_FRAME: '<div class="{overlay}">' + '<div class="{border}"></div>' +
+            '<div class="{border}"></div>' + '<div class="{border}"></div>' +
+            '<div class="{border}"></div>' + '</div>',
 
         _lastActiveRow: null,
         _nodes: null,
@@ -68,8 +69,11 @@ var DataTableHighlight = A.Base.create(
             };
 
             instance.afterHostEvent('activeCoordChange', instance._afterActiveCoordChange);
-            instance.afterHostEvent('selectionChange', instance._afterSelectionChange);
+            instance.afterHostEvent('blur', instance._afterBlur);
             instance.afterHostEvent('dataChange', instance._afterDataChange);
+            instance.afterHostEvent('selectionChange', instance._afterSelectionChange);
+
+            A.on('windowresize', A.bind(instance._afterWindowResize, instance));
         },
 
         /**
@@ -146,7 +150,7 @@ var DataTableHighlight = A.Base.create(
          * @param event
          * @protected
          */
-        _afterActiveCoordChange: function(event) {
+        _afterActiveCoordChange: function() {
             var instance = this,
                 host = instance.get('host'),
                 activeBorderWidth = instance.get('activeBorderWidth'),
@@ -179,11 +183,22 @@ var DataTableHighlight = A.Base.create(
         /**
          * TODO. Wanna help? Please send a Pull Request.
          *
+         * @method _afterBlur
+         * @param event
+         * @protected
+         */
+        _afterBlur: function() {
+            this.clear();
+        },
+
+        /**
+         * TODO. Wanna help? Please send a Pull Request.
+         *
          * @method _afterDataChange
          * @param event
          * @protected
          */
-        _afterDataChange: function(event) {
+        _afterDataChange: function() {
             var instance = this;
 
             instance.clear();
@@ -224,6 +239,30 @@ var DataTableHighlight = A.Base.create(
         /**
          * TODO. Wanna help? Please send a Pull Request.
          *
+         * @method _afterWindowResize
+         * @protected
+         */
+        _afterWindowResize: function() {
+            var instance = this,
+                activeBorderWidth = instance.get('activeBorderWidth'),
+                overlayActiveNode = instance.get('overlayActiveNode'),
+                overlayNode = instance.get('overlayNode'),
+                rangeBorderWidth = instance.get('rangeBorderWidth');
+
+            if (overlayActiveNode.inDoc()) {
+                instance._alignBorder(
+                    overlayActiveNode, instance.getActiveRegion(), activeBorderWidth);
+            }
+
+            if (overlayNode.inDoc()) {
+                instance._alignBorder(
+                    overlayNode, instance.getSelectionRegion(), rangeBorderWidth);
+            }
+        },
+
+        /**
+         * TODO. Wanna help? Please send a Pull Request.
+         *
          * @method _alignBorder
          * @param overlayNode
          * @param region
@@ -234,7 +273,7 @@ var DataTableHighlight = A.Base.create(
             var instance = this,
                 host = instance.get('host');
 
-            host._tableNode.appendChild(overlayNode);
+            host._tableNode.ancestor().appendChild(overlayNode);
 
             if (region) {
                 var borders = overlayNode.get('children'),

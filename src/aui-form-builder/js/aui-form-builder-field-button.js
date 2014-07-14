@@ -13,14 +13,17 @@ var L = A.Lang,
         }
     ),
 
+    AEscape = A.Escape,
+
     getCN = A.getClassName,
 
     CSS_BTN = getCN('btn'),
+    CSS_BTN_DEFAULT = getCN('btn', 'default'),
     CSS_FORM_BUILDER_FIELD = getCN('form-builder-field'),
     CSS_FORM_BUILDER_FIELD_NODE = getCN('form-builder-field', 'node'),
 
-    TPL_BUTTON = '<button id="{id}" class="' + [CSS_FORM_BUILDER_FIELD_NODE, CSS_BTN].join(' ') +
-        '" type="{type}">{value}</button>',
+    TPL_BUTTON = '<button id="{id}" class="' + [CSS_FORM_BUILDER_FIELD_NODE, CSS_BTN,
+        CSS_BTN_DEFAULT].join(' ') + '" type="{type}">{value}</button>',
 
     BUTTON_TYPES = ['submit', 'reset', 'button'];
 
@@ -153,11 +156,11 @@ var FormBuilderButtonField = A.Component.create({
 
             return L.sub(
                 instance.get('template'), {
-                    id: instance.get('id'),
-                    label: instance.get('label'),
-                    name: instance.get('name'),
-                    type: instance.get('buttonType'),
-                    value: instance.get('predefinedValue')
+                    id: AEscape.html(instance.get('id')),
+                    label: AEscape.html(instance.get('label')),
+                    name: AEscape.html(instance.get('name')),
+                    type: AEscape.html(instance.get('buttonType')),
+                    value: AEscape.html(instance.get('predefinedValue'))
                 }
             );
         },
@@ -179,12 +182,12 @@ var FormBuilderButtonField = A.Component.create({
                 attributeName: 'buttonType',
                 editor: new A.RadioCellEditor({
                     options: {
-                        'button': strings['button'],
-                        'reset': strings['reset'],
-                        'submit': strings['submit']
+                        'button': strings.button,
+                        'reset': strings.reset,
+                        'submit': strings.submit
                     }
                 }),
-                name: strings['buttonType']
+                name: strings.buttonType
             });
 
             return model;
@@ -215,7 +218,7 @@ var FormBuilderButtonField = A.Component.create({
             var instance = this,
                 templateNode = instance.get('templateNode');
 
-            templateNode.setContent(val);
+            templateNode.setContent(AEscape.html(val));
         }
 
     }
@@ -223,5 +226,4 @@ var FormBuilderButtonField = A.Component.create({
 });
 
 A.FormBuilderButtonField = FormBuilderButtonField;
-
-A.FormBuilder.types.button = A.FormBuilderButtonField;
+A.FormBuilderField.types.button = A.FormBuilderButtonField;

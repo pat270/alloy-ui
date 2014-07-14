@@ -4,11 +4,29 @@ var add = Y.Features.add;
 // aui-base-html5-shiv
 add('load', '0', {
     "name": "aui-base-html5-shiv",
-    "trigger": "aui-base",
+    "trigger": "node-base",
+    "ua": "ie"
+});
+// aui-carousel-touch
+add('load', '1', {
+    "name": "aui-carousel-touch",
+    "trigger": "aui-carousel",
+    "ua": "touchEnabled"
+});
+// aui-event-delegate-change
+add('load', '2', {
+    "name": "aui-event-delegate-change",
+    "trigger": "event-base-ie",
+    "ua": "ie"
+});
+// aui-event-delegate-submit
+add('load', '3', {
+    "name": "aui-event-delegate-submit",
+    "trigger": "event-base-ie",
     "ua": "ie"
 });
 // aui-event-input
-add('load', '1', {
+add('load', '4', {
     "name": "aui-event-input",
     "test": function(A) {
     var supportsDOMEvent = A.supportsDOMEvent,
@@ -25,10 +43,30 @@ add('load', '1', {
 
     return !testFeature('event', 'input');
 },
-    "trigger": "aui-event"
+    "trigger": "aui-event-base"
+});
+// aui-image-viewer-multiple-swipe
+add('load', '5', {
+    "name": "aui-image-viewer-multiple-swipe",
+    "trigger": "aui-image-viewer-multiple",
+    "ua": "touchEnabled"
+});
+// aui-image-viewer-swipe
+add('load', '6', {
+    "name": "aui-image-viewer-swipe",
+    "trigger": "aui-image-viewer-base",
+    "ua": "touchEnabled"
+});
+// aui-modal-resize
+add('load', '7', {
+    "name": "aui-modal-resize",
+    "test": function(A) {
+    return !A.UA.mobile;
+},
+    "trigger": "aui-modal"
 });
 // aui-node-html5
-add('load', '2', {
+add('load', '8', {
     "name": "aui-node-html5",
     "trigger": "aui-node",
     "ua": "ie"

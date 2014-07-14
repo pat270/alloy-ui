@@ -23,37 +23,37 @@ var Lang = A.Lang,
 
     getCN = A.getClassName,
 
-    CSS_CONTROL_GROUP = getCN('control', 'group'),
-    CSS_ERROR = getCN('error'),
+    CSS_FORM_GROUP = getCN('form', 'group'),
+    CSS_HAS_ERROR = getCN('has', 'error'),
     CSS_ERROR_FIELD = getCN('error', 'field'),
-    CSS_SUCCESS = getCN('success'),
+    CSS_HAS_SUCCESS = getCN('has', 'success'),
     CSS_SUCCESS_FIELD = getCN('success', 'field'),
-    CSS_HELP_INLINE = getCN('help', 'inline'),
+    CSS_HELP_BLOCK = getCN('help', 'block'),
     CSS_STACK = getCN('form-validator', 'stack'),
 
     TPL_MESSAGE = '<div role="alert"></div>',
-    TPL_STACK_ERROR = '<div class="' + [CSS_STACK, CSS_HELP_INLINE].join(' ') + '"></div>';
+    TPL_STACK_ERROR = '<div class="' + [CSS_STACK, CSS_HELP_BLOCK].join(' ') + '"></div>';
 
 A.mix(defaults, {
     STRINGS: {
-        DEFAULT: 'Please fix this field.',
-        acceptFiles: 'Please enter a value with a valid extension ({0}).',
-        alpha: 'Please enter only alpha characters.',
-        alphanum: 'Please enter only alphanumeric characters.',
-        date: 'Please enter a valid date.',
-        digits: 'Please enter only digits.',
-        email: 'Please enter a valid email address.',
-        equalTo: 'Please enter the same value again.',
-        iri: 'Please enter a valid IRI.',
-        max: 'Please enter a value less than or equal to {0}.',
-        maxLength: 'Please enter no more than {0} characters.',
-        min: 'Please enter a value greater than or equal to {0}.',
-        minLength: 'Please enter at least {0} characters.',
-        number: 'Please enter a valid number.',
-        range: 'Please enter a value between {0} and {1}.',
-        rangeLength: 'Please enter a value between {0} and {1} characters long.',
-        required: 'This field is required.',
-        url: 'Please enter a valid URL.'
+        DEFAULT: 'Please fix {field}.',
+        acceptFiles: 'Please enter a value with a valid extension ({0}) in {field}.',
+        alpha: 'Please enter only alpha characters in {field}.',
+        alphanum: 'Please enter only alphanumeric characters in {field}.',
+        date: 'Please enter a valid date in {field}.',
+        digits: 'Please enter only digits in {field}.',
+        email: 'Please enter a valid email address in {field}.',
+        equalTo: 'Please enter the same value again in {field}.',
+        iri: 'Please enter a valid IRI in {field}.',
+        max: 'Please enter a value less than or equal to {0} in {field}.',
+        maxLength: 'Please enter no more than {0} characters in {field}.',
+        min: 'Please enter a value greater than or equal to {0} in {field}.',
+        minLength: 'Please enter at least {0} characters in {field}.',
+        number: 'Please enter a valid number in {field}.',
+        range: 'Please enter a value between {0} and {1} in {field}.',
+        rangeLength: 'Please enter a value between {0} and {1} characters long in {field}.',
+        required: '{field} is required.',
+        url: 'Please enter a valid URL in {field}.'
     },
 
     REGEX: {
@@ -65,17 +65,81 @@ A.mix(defaults, {
 
         // Regex from Scott Gonzalez Email Address Validation:
         // http://projects.scottsplayground.com/email_address_validation/
-        email: /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i,
+        email: new RegExp('^((([a-z]|\\d|[!#\\$%&\'\\*\\+\\-\\/=\\?\\^_`{\\|}~]|' +
+            '[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])+(\\.([a-z]|\\d|[!#' +
+            '\\$%&\'\\*\\+\\-\\/=\\?\\^_`{\\|}~]|[\\u00A0-\\uD7FF\\uF900-\\uFDCF' +
+            '\\uFDF0-\\uFFEF])+)*)|((\\x22)((((\\x20|\\x09)*(\\x0d\\x0a))?(\\x20' +
+            '|\\x09)+)?(([\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x7f]|\\x21|[\\x23-\\' +
+            'x5b]|[\\x5d-\\x7e]|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])' +
+            '|(\\\\([\\x01-\\x09\\x0b\\x0c\\x0d-\\x7f]|[\\u00A0-\\uD7FF\\uF900-' +
+            '\\uFDCF\\uFDF0-\\uFFEF]))))*(((\\x20|\\x09)*(\\x0d\\x0a))?(\\' +
+            'x20|\\x09)+)?(\\x22)))@((([a-z]|\\d|[\\u00A0-\\uD7FF\\uF900-\\' +
+            'uFDCF\\uFDF0-\\uFFEF])|(([a-z]|\\d|[\\u00A0-\\uD7FF\\uF900-\\' +
+            'uFDCF\\uFDF0-\\uFFEF])([a-z]|\\d|-|\\.|_|~|[\\u00A0-\\uD7FF\\' +
+            'uF900-\\uFDCF\\uFDF0-\\uFFEF])*([a-z]|\\d|[\\u00A0-\\uD7FF\\' +
+            'uF900-\\uFDCF\\uFDF0-\\uFFEF])))\\.)+(([a-z]|[\\u00A0-\\uD7FF\\' +
+            'uF900-\\uFDCF\\uFDF0-\\uFFEF])|(([a-z]|[\\u00A0-\\uD7FF\\' +
+            'uF900-\\uFDCF\\uFDF0-\\uFFEF])([a-z]|\\d|-|\\.|_|~|[\\' +
+            'u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])*([a-z]|[\\' +
+            'u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])))\\.?$', 'i'),
 
         // Regex from Scott Gonzalez IRI:
         // http://projects.scottsplayground.com/iri/demo/
-        iri: /^([a-z]([a-z]|\d|\+|-|\.)*):(\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?((\[(|(v[\da-f]{1,}\.(([a-z]|\d|-|\.|_|~)|[!\$&'\(\)\*\+,;=]|:)+))\])|((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=])*)(:\d*)?)(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*|(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)|((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)|((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)){0})(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i,
+        iri: new RegExp('^([a-z]([a-z]|\\d|\\+|-|\\.)*):(\\/\\/(((([a-z]|\\d|' +
+            '-|\\.|_|~|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])|(%[' +
+            '\\da-f]{2})|[!\\$&\'\\(\\)\\*\\+,;=]|:)*@)?((\\[(|(v[\\da-f]{1' +
+            ',}\\.(([a-z]|\\d|-|\\.|_|~)|[!\\$&\'\\(\\)\\*\\+,;=]|:)+))\\])' +
+            '|((\\d|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])\\.(\\d|[1-9]\\d|1' +
+            '\\d\\d|2[0-4]\\d|25[0-5])\\.(\\d|[1-9]\\d|1\\d\\d|2[0-4]\\d' +
+            '|25[0-5])\\.(\\d|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5]))|' +
+            '(([a-z]|\\d|-|\\.|_|~|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-' +
+            '\\uFFEF])|(%[\\da-f]{2})|[!\\$&\'\\(\\)\\*\\+,;=])*)(:\\d*)?)' +
+            '(\\/(([a-z]|\\d|-|\\.|_|~|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\' +
+            'uFDF0-\\uFFEF])|(%[\\da-f]{2})|[!\\$&\'\\(\\)\\*\\+,;=]|:|@)*)' +
+            '*|(\\/((([a-z]|\\d|-|\\.|_|~|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\' +
+            'uFDF0-\\uFFEF])|(%[\\da-f]{2})|[!\\$&\'\\(\\)\\*\\+,;=]|:|@)+' +
+            '(\\/(([a-z]|\\d|-|\\.|_|~|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\' +
+            'uFDF0-\\uFFEF])|(%[\\da-f]{2})|[!\\$&\'\\(\\)\\*\\+,;=]|:|' +
+            '@)*)*)?)|((([a-z]|\\d|-|\\.|_|~|[\\u00A0-\\uD7FF\\uF900-\\' +
+            'uFDCF\\uFDF0-\\uFFEF])|(%[\\da-f]{2})|[!\\$&\'\\(\\)\\*\\' +
+            '+,;=]|:|@)+(\\/(([a-z]|\\d|-|\\.|_|~|[\\u00A0-\\uD7FF\\' +
+            'uF900-\\uFDCF\\uFDF0-\\uFFEF])|(%[\\da-f]{2})|[!\\$&\'\\' +
+            '(\\)\\*\\+,;=]|:|@)*)*)|((([a-z]|\\d|-|\\.|_|~|[\\u00A0-\\' +
+            'uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])|(%[\\da-f]{2})|[!\\' +
+            '$&\'\\(\\)\\*\\+,;=]|:|@)){0})(\\?((([a-z]|\\d|-|\\.|_|~|' +
+            '[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])|(%[\\da-f]' +
+            '{2})|[!\\$&\'\\(\\)\\*\\+,;=]|:|@)|[\\uE000-\\uF8FF]|\\/|' +
+            '\\?)*)?(\\#((([a-z]|\\d|-|\\.|_|~|[\\u00A0-\\uD7FF\\uF900-\\' +
+            'uFDCF\\uFDF0-\\uFFEF])|(%[\\da-f]{2})|[!\\$&\'\\(\\)\\*\\' +
+            '+,;=]|:|@)|\\/|\\?)*)?$', 'i'),
 
         number: /^[+\-]?(\d+([.,]\d+)?)+([eE][+-]?\d+)?$/,
 
         // Regex from Scott Gonzalez Common URL:
         // http://projects.scottsplayground.com/iri/demo/common.html
-        url: /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)*(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i
+        url: new RegExp('^(https?|ftp):\\/\\/(((([a-z]|\\d|-|\\.|_|~|[\\' +
+            'u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])|(%[\\da-f]{2})' +
+            '|[!\\$&\'\\(\\)\\*\\+,;=]|:)*@)?(((\\d|[1-9]\\d|1\\d\\d|' +
+            '2[0-4]\\d|25[0-5])\\.(\\d|[1-9]\\d|1\\d\\d|2[0-4]\\d|25' +
+            '[0-5])\\.(\\d|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])\\.' +
+            '(\\d|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5]))|((([a-z]|\\d' +
+            '|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])|(([a-z]|\\' +
+            'd|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])([a-z]|\\d|' +
+            '-|\\.|_|~|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])*' +
+            '([a-z]|\\d|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])))\\' +
+            '.)*(([a-z]|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])|' +
+            '(([a-z]|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])([a-z]' +
+            '|\\d|-|\\.|_|~|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])' +
+            '*([a-z]|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])))\\.?)' +
+            '(:\\d*)?)(\\/((([a-z]|\\d|-|\\.|_|~|[\\u00A0-\\uD7FF\\uF900-\\' +
+            'uFDCF\\uFDF0-\\uFFEF])|(%[\\da-f]{2})|[!\\$&\'\\(\\)\\*\\+,;=]' +
+            '|:|@)+(\\/(([a-z]|\\d|-|\\.|_|~|[\\u00A0-\\uD7FF\\uF900-\\uFDCF' +
+            '\\uFDF0-\\uFFEF])|(%[\\da-f]{2})|[!\\$&\'\\(\\)\\*\\+,;=]|:|@)*)' +
+            '*)?)?(\\?((([a-z]|\\d|-|\\.|_|~|[\\u00A0-\\uD7FF\\uF900-\\' +
+            'uFDCF\\uFDF0-\\uFFEF])|(%[\\da-f]{2})|[!\\$&\'\\(\\)\\*\\+,;=]|' +
+            ':|@)|[\\uE000-\\uF8FF]|\\/|\\?)*)?(\\#((([a-z]|\\d|-|\\.|_|~|' +
+            '[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])|(%[\\da-f]{2})' +
+            '|[!\\$&\'\\(\\)\\*\\+,;=]|:|@)|\\/|\\?)*)?$', 'i')
     },
 
     RULES: {
@@ -93,7 +157,7 @@ A.mix(defaults, {
             return regex && regex.test(val);
         },
 
-        date: function(val, node, ruleValue) {
+        date: function(val) {
             var date = new Date(val);
 
             return (isDate(date) && (date !== 'Invalid Date') && !isNaN(date));
@@ -133,7 +197,7 @@ A.mix(defaults, {
             return (length >= ruleValue[0]) && (length <= ruleValue[1]);
         },
 
-        required: function(val, node, ruleValue) {
+        required: function(val, node) {
             var instance = this;
 
             if (A.FormValidator.isCheckable(node)) {
@@ -197,7 +261,7 @@ var FormValidator = A.Component.create({
          * @type String
          */
         containerErrorClass: {
-            value: CSS_ERROR,
+            value: CSS_HAS_ERROR,
             validator: isString
         },
 
@@ -208,7 +272,7 @@ var FormValidator = A.Component.create({
          * @type String
          */
         containerValidClass: {
-            value: CSS_SUCCESS,
+            value: CSS_HAS_SUCCESS,
             validator: isString
         },
 
@@ -242,7 +306,7 @@ var FormValidator = A.Component.create({
          * @type String
          */
         fieldContainer: {
-            value: '.' + CSS_CONTROL_GROUP
+            value: '.' + CSS_FORM_GROUP
         },
 
         /**
@@ -453,7 +517,7 @@ var FormValidator = A.Component.create({
             var instance = this,
                 boundingBox = instance.get('boundingBox');
 
-            var onceFocusHandler = boundingBox.delegate('focus', function(event) {
+            var onceFocusHandler = boundingBox.delegate('focus', function() {
                 instance._setARIARoles();
                 onceFocusHandler.detach();
             }, 'input,select,textarea,button');
@@ -556,7 +620,7 @@ var FormValidator = A.Component.create({
         focusInvalidField: function() {
             var instance = this,
                 boundingBox = instance.get('boundingBox'),
-                field = boundingBox.one('.' + CSS_ERROR);
+                field = boundingBox.one('.' + CSS_ERROR_FIELD);
 
             if (field) {
                 if (instance.get('selectText')) {
@@ -648,8 +712,13 @@ var FormValidator = A.Component.create({
                 fieldName = field.get('name'),
                 fieldStrings = instance.get('fieldStrings')[fieldName] || {},
                 fieldRules = instance.get('rules')[fieldName],
+                fieldLabel = instance._findFieldLabel(field),
                 strings = instance.get('strings'),
                 substituteRulesMap = {};
+
+            if (fieldLabel) {
+                substituteRulesMap.field = fieldLabel;
+            }
 
             if (rule in fieldRules) {
                 var ruleValue = A.Array(fieldRules[rule]);
@@ -748,7 +817,7 @@ var FormValidator = A.Component.create({
 
             A.Array.each(
                 errors,
-                function(error, index) {
+                function(error) {
                     var message = instance.getFieldErrorMessage(field, error),
                         messageEl = instance.get('messageContainer').addClass(error);
 
@@ -929,11 +998,13 @@ var FormValidator = A.Component.create({
             var instance = this,
                 ancestor,
                 field,
+                label,
                 nextSibling,
                 stackContainer,
                 target,
                 validator;
 
+            label = instance.get('labelCssClass');
             validator = event.validator;
             field = validator.field;
 
@@ -949,10 +1020,23 @@ var FormValidator = A.Component.create({
                 if (nextSibling && nextSibling.get('nodeType') === 3) {
                     ancestor = field.ancestor();
 
-                    if (ancestor && ancestor.hasClass(instance.get('labelCssClass'))) {
-                        target = nextSibling;
+                    if (ancestor) {
+                        if (ancestor.hasClass(label)) {
+                            target = nextSibling;
+                        }
+                        else if (A.FormValidator.isCheckable(target)) {
+                            label = ancestor.previous('.' + label);
+
+                            target = label;
+                        }
                     }
                 }
+
+                // Use aria-describedby to provide extra details for filling input field
+                var id = field.get('id') + 'Helper';
+
+                stackContainer.set('id', id);
+                field.set('aria-describedby', id);
 
                 target.placeAfter(stackContainer);
 
@@ -1027,6 +1111,22 @@ var FormValidator = A.Component.create({
         },
 
         /**
+         * Finds the label text of a field if existing.
+         *
+         * @method _findFieldLabel
+         * @param field
+         * @return {String}
+         */
+        _findFieldLabel: function(field) {
+            var labelCssClass = '.' + this.get('labelCssClass'),
+                label = field.previous(labelCssClass) || field.ancestor().previous(labelCssClass);
+
+            if (label) {
+                return label.get('text');
+            }
+        },
+
+        /**
          * Sets the error/success CSS classes based on the validation of a
          * field.
          *
@@ -1041,9 +1141,17 @@ var FormValidator = A.Component.create({
             if (field) {
                 if (valid) {
                     field.removeClass(errorClass).addClass(validClass);
+
+                    if (validClass === CSS_SUCCESS_FIELD) {
+                        field.removeAttribute('aria-invalid');
+                    }
                 }
                 else {
                     field.removeClass(validClass).addClass(errorClass);
+
+                    if (errorClass === CSS_ERROR_FIELD) {
+                        field.set('aria-invalid', true);
+                    }
                 }
             }
         },
@@ -1148,7 +1256,7 @@ var FormValidator = A.Component.create({
          * @param event
          * @protected
          */
-        _onFormReset: function(event) {
+        _onFormReset: function() {
             var instance = this;
 
             instance.resetAllFields();
@@ -1243,7 +1351,7 @@ var FormValidator = A.Component.create({
 A.each(
     defaults.REGEX,
     function(regex, key) {
-        defaults.RULES[key] = function(val, node, ruleValue) {
+        defaults.RULES[key] = function(val) {
             return defaults.REGEX[key].test(val);
         };
     }

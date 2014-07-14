@@ -1,63 +1,30 @@
-/*
- * Copyright (c) 2013, Liferay Inc. All rights reserved.
- * Code licensed under the BSD License:
- * https://github.com/liferay/alloy-ui/blob/master/LICENSE.md
- *
- * @author Zeno Rocha <zeno.rocha@liferay.com>
- * @author Eduardo Lundgren <eduardo.lundgren@liferay.com>
- */
+var gulp = require('gulp');
+var prompt = require('gulp-prompt');
+var spawn = require('spawn-local-bin');
 
-var TASK = {
-    name: 'create',
-    description: 'Create a new module under src/ folder'
-};
+function setName(res) {
+    exports.name = res.name;
 
-// -- Dependencies -------------------------------------------------------------
-var async = require('async');
-var spawn = require('child_process').spawn;
-var which = require('which').sync;
+    if (exports.name.indexOf('aui-') !== 0) {
+        exports.name = 'aui-' + exports.name;
+    }
+}
 
-// -- Task ---------------------------------------------------------------------
-module.exports = function(grunt) {
-    grunt.registerTask(TASK.name, TASK.description, function() {
-        var done = this.async();
+gulp.task('create-name', function() {
+    return gulp.src('', { read: false })
+        .pipe(prompt.prompt({
+            name: 'name',
+            type: 'input',
+            message: 'Provide a name to your module'
+        }, setName));
+});
 
-        async.series([
-            function(mainCallback) {
-                    exports._setGruntConfig(mainCallback);
-            },
-            function(mainCallback) {
-                    exports._runCommand(mainCallback);
-            }],
-            function(err) {
-                if (err) {
-                    done(false);
-                }
-                else {
-                    done();
-                }
-            }
-        );
-    });
+gulp.task('create', ['create-name'], function(callback) {
+    var args = ['init', exports.name];
+    var cmd = 'yogi';
 
-    exports._setGruntConfig = function(mainCallback) {
-        if (typeof grunt.option('name') === 'string') {
-            grunt.config([TASK.name, 'name'], grunt.option('name'));
-        }
-
-        // Add 'aui' prefix if necessary
-        if (grunt.config([TASK.name, 'name']).indexOf('aui-') !== 0) {
-            grunt.config([TASK.name, 'name'], 'aui-' + grunt.config([TASK.name, 'name']));
-        }
-
-        mainCallback();
-    };
-
-    exports._runCommand = function(mainCallback) {
-        var cmd = spawn(which('yogi'), ['init', grunt.config('create.name')], {
-            stdio: 'inherit'
+    spawn(cmd, args)
+        .on('exit', function() {
+            callback();
         });
-
-        cmd.on('close', mainCallback);
-    };
-};
+});

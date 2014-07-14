@@ -29,7 +29,7 @@ PositionAlignSuggestion.ATTRS = {
      * @type {String}
      */
     position: {
-        setter: '_setPosition',
+        getter: '_getPosition',
         validator: '_validatePosition',
         value: 'top'
     }
@@ -153,21 +153,43 @@ A.mix(PositionAlignSuggestion.prototype, {
     _findBestPosition: function(node) {
         var instance = this,
             position = instance.get('position'),
-            testPositions = [position, 'top', 'bottom', 'left', 'right'];
+            testPositions = [position, 'top', 'bottom', 'right', 'left'];
 
-        testPositions = A.Array.dedupe(testPositions);
+        if (node && !node.inViewportRegion()) {
+            return instance._findBestPositionOutsideViewport(node);
+        }
+        else {
+            testPositions = A.Array.dedupe(testPositions);
 
-        A.Array.some(testPositions, function(testPosition) {
-            if (instance._canWidgetAlignToNode(node, testPosition)) {
-                position = testPosition;
-
-                return true;
-            }
-        });
+            A.Array.some(testPositions, function(testPosition) {
+                if (instance._canWidgetAlignToNode(node, testPosition)) {
+                    position = testPosition;
+                    return true;
+                }
+            });
+        }
 
         return position;
     },
 
+    _findBestPositionOutsideViewport: function(node) {
+        var instance = this,
+            nodeRegion = instance._getRegion(node),
+            region = instance._getRegion();
+
+        if (nodeRegion.top < region.top) {
+            return 'bottom';
+        }
+        else if (nodeRegion.bottom > region.bottom) {
+            return 'top';
+        }
+        else if (nodeRegion.right > region.right) {
+            return 'left';
+        }
+        else if (nodeRegion.left < region.left) {
+            return 'right';
+        }
+    },
     /**
      * Guess alignment points for the `position`.
      *
@@ -177,6 +199,21 @@ A.mix(PositionAlignSuggestion.prototype, {
      */
     _getAlignPointsSuggestion: function(position) {
         return this.POSITION_ALIGN_SUGGESTION[position];
+    },
+
+    /**
+     * Set the `position` attribute.
+     *
+     * @method _getPosition
+     * @param {Number} val
+     * @protected
+     */
+    _getPosition: function(val) {
+        if (A.Lang.isFunction(val)) {
+            val = val.call(this);
+        }
+
+        return val;
     },
 
     /**
@@ -190,7 +227,7 @@ A.mix(PositionAlignSuggestion.prototype, {
         var instance = this,
             position;
 
-        if (!instance.get('constrain') || !instance.get('rendered')) {
+        if (!instance.get('constrain')) {
             return;
         }
 
@@ -203,21 +240,6 @@ A.mix(PositionAlignSuggestion.prototype, {
 
         return new A.Do.AlterArgs(
             null, [node, instance._getAlignPointsSuggestion(position)]);
-    },
-
-    /**
-     * Set the `position` attribute.
-     *
-     * @method _setPosition
-     * @param value
-     * @protected
-     */
-    _setPosition: function(val) {
-        if (A.Lang.isFunction(val)) {
-            val = val.call(this);
-        }
-
-        return val;
     },
 
     /**

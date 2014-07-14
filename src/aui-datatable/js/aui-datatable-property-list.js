@@ -78,7 +78,7 @@ A.PropertyList = A.Base.create(A.DataTable.NAME, A.DataTable, [A.WidgetCssClass,
      * @param event
      * @protected
      */
-    _afterUITriggerSort: function(event) {
+    _afterUITriggerSort: function() {
         var instance = this;
 
         instance.highlight.clear();
@@ -129,9 +129,10 @@ A.PropertyList = A.Base.create(A.DataTable.NAME, A.DataTable, [A.WidgetCssClass,
      */
     _onSelectionKey: function(event) {
         var instance = this,
-            keyCode = event.keyCode;
+            keyCode = event.keyCode,
+            editor = A.Widget.getByNode(event.target);
 
-        if (keyCode === 13) {
+        if (editor && keyCode === 13) {
             instance._onEditCell(event);
         }
 
@@ -228,14 +229,15 @@ A.PropertyList = A.Base.create(A.DataTable.NAME, A.DataTable, [A.WidgetCssClass,
         },
 
         /**
-         * TODO. Wanna help? Please send a Pull Request.
+         * The event type that will be used to trigger edit mode for a datatable
+         * cell.
          *
          * @attribute editEvent
          * @default 'dblclick'
          * @type String
          */
         editEvent: {
-            value: 'dblclick'
+            value: A.UA.touchEnabled ? 'click' : 'dblclick'
         },
 
         /**

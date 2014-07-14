@@ -32,18 +32,16 @@ YUI.add('aui-rating-tests', function(Y) {
 
         // Tests: AUI-1132
         'check that pressing enter selects an item': function() {
-            var instance = this,
-                item3;
+            var item = Y.one('.glyphicon-star-empty');
 
-            item0 = Y.one('.icon-star-empty');
+            Y.Test.Assert.isFalse(item.hasClass('glyphicon-star'),
+                'The first item shouldn\'t be not selected');
 
-            Y.Test.Assert.isFalse(item0.hasClass('icon-star'), 'The first item shouldn\'t be not selected');
-
-            item0.simulate('keypress', {
+            item.simulate('keypress', {
                 keyCode: 13
             });
 
-            Y.Test.Assert.isTrue(item0.hasClass('icon-star'), 'The first item should be selected');
+            Y.Test.Assert.isTrue(item.hasClass('glyphicon-star'), 'The first item should be selected');
         }
     }));
 
@@ -60,9 +58,8 @@ YUI.add('aui-rating-tests', function(Y) {
 
         // Tests: AUI-1250
         'check that a float passed to defaultSelected is rounded': function() {
-            var instance = this;
-
-            Y.Test.Assert.areEqual(roundedValue, ratingRounded.get('elements').filter('.icon-star').size(), 'The number of selected items should be ' + roundedValue);
+            Y.Test.Assert.areEqual(roundedValue, ratingRounded.get('elements').filter('.glyphicon-star').size(),
+                'The number of selected items should be ' + roundedValue);
         }
     }));
 

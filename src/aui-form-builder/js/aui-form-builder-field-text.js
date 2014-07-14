@@ -7,20 +7,24 @@
 
 var L = A.Lang,
 
+    AEscape = A.Escape,
+
     getCN = A.getClassName,
 
+    CSS_FORM_CONTROL = getCN('form', 'control'),
     CSS_FIELD_INPUT = getCN('field', 'input'),
     CSS_FIELD_INPUT_TEXT = getCN('field', 'input', 'text'),
     CSS_FORM_BUILDER_FIELD = getCN('form-builder-field'),
     CSS_FORM_BUILDER_FIELD_NODE = getCN('form-builder-field', 'node'),
 
-    TPL_INPUT = '<input id="{id}" class="' + [CSS_FORM_BUILDER_FIELD_NODE, CSS_FIELD_INPUT, CSS_FIELD_INPUT_TEXT].join(
-        ' ') + '" name="{name}" type="text" value="{value}" />',
+    TPL_INPUT = '<div class="form-builder-field-wrapper"><input id="{id}" class="' + [CSS_FORM_BUILDER_FIELD_NODE,
+        CSS_FIELD_INPUT, CSS_FIELD_INPUT_TEXT,
+        CSS_FORM_CONTROL].join(' ') + '" name="{name}" type="text" value="{value}" /></div>',
 
     WIDTH_VALUES_MAP = {
-        small: 'small',
-        medium: 'medium',
-        large: 'large'
+        small: 'col-xs-4',
+        medium: 'col-xs-8',
+        large: 'col-xs-12'
     };
 
 /**
@@ -107,11 +111,11 @@ var FormBuilderTextField = A.Component.create({
 
             return L.sub(
                 instance.get('template'), {
-                    id: instance.get('id'),
-                    label: instance.get('label'),
-                    name: instance.get('name'),
-                    value: instance.get('predefinedValue'),
-                    width: instance.get('width')
+                    id: AEscape.html(instance.get('id')),
+                    label: AEscape.html(instance.get('label')),
+                    name: AEscape.html(instance.get('name')),
+                    value: AEscape.html(instance.get('predefinedValue')),
+                    width: AEscape.html(instance.get('width'))
                 }
             );
         },
@@ -132,15 +136,15 @@ var FormBuilderTextField = A.Component.create({
                 attributeName: 'width',
                 editor: new A.RadioCellEditor({
                     options: {
-                        small: strings['small'],
-                        medium: strings['medium'],
-                        large: strings['large']
+                        small: strings.small,
+                        medium: strings.medium,
+                        large: strings.large
                     }
                 }),
                 formatter: function(o) {
                     return strings[o.data.value];
                 },
-                name: strings['width']
+                name: strings.width
             });
 
             return model;
@@ -157,8 +161,8 @@ var FormBuilderTextField = A.Component.create({
             var instance = this,
                 templateNode = instance.get('templateNode');
 
-            templateNode.addClass(getCN('input', WIDTH_VALUES_MAP[val]));
-            templateNode.removeClass(getCN('input', WIDTH_VALUES_MAP[instance.prevWidth]));
+            templateNode.removeClass(WIDTH_VALUES_MAP[instance.prevWidth]);
+            templateNode.addClass(WIDTH_VALUES_MAP[val]);
 
             instance.prevWidth = val;
         }
@@ -169,4 +173,4 @@ var FormBuilderTextField = A.Component.create({
 
 A.FormBuilderTextField = FormBuilderTextField;
 
-A.FormBuilder.types.text = A.FormBuilderTextField;
+A.FormBuilderField.types.text = A.FormBuilderTextField;
