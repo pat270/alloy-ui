@@ -73,6 +73,28 @@ YUI.add('aui-base-tests', function(Y) {
                     }
                 }
             }
+        },
+
+        'should truncate long strings consistently': function() {
+            var actual = Y.Lang.String.truncate('myteststring', 5, 'end');
+            var expected = 'my...';
+
+            Assert.areEqual(expected, actual);
+
+            actual = Y.Lang.String.truncate('myteststring', 5, 'start');
+            expected = '...ng';
+
+            Assert.areEqual(expected, actual);
+
+            actual = Y.Lang.String.truncate('myteststring', 8, 'middle');
+            expected = 'myt...ng';
+
+            Assert.areEqual(expected, actual);
+
+            actual = Y.Lang.String.truncate('myteststring', 9, 'middle');
+            expected = 'myt...ing';
+
+            Assert.areEqual(expected, actual);
         }
     }));
 
