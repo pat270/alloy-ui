@@ -117,13 +117,10 @@ var FormBuilderCheckBoxField = A.Component.create({
          */
         renderUI: function() {
             var instance = this,
-                contentBox = instance.get('contentBox'),
-                labelNode = instance.get('labelNode'),
-                templateNode = instance.get('templateNode');
+                contentBox = instance.get('contentBox');
 
             A.FormBuilderCheckBoxField.superclass.renderUI.apply(instance, arguments);
             contentBox.addClass(CSS_CHECKBOX);
-            labelNode.prepend(templateNode);
         },
 
         /**
@@ -190,7 +187,8 @@ var FormBuilderCheckBoxField = A.Component.create({
                 labelNode = instance.get('labelNode'),
                 templateNode = instance.get('templateNode');
 
-            labelNode.setContent(templateNode.outerHTML() + AEscape.html(val));
+            labelNode.setContent(AEscape.html(val));
+            labelNode.prepend(templateNode);
         },
 
         /**
@@ -207,10 +205,12 @@ var FormBuilderCheckBoxField = A.Component.create({
                 templateNode = instance.get('templateNode');
 
             if (val) {
-                labelNode.setContent(templateNode.outerHTML() + label);
+                labelNode.setContent(label);
             } else {
-                labelNode.setContent(templateNode.outerHTML());
+                labelNode.setContent();
             }
+
+            labelNode.prepend(templateNode);
         },
 
         /**
