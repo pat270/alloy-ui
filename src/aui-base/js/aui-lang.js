@@ -320,7 +320,7 @@
             str = String(str);
             var strLength = str.length;
 
-            if (str) {
+            if (str && strLength > length) {
                 where = where || 'end';
 
                 if (where === 'end') {
