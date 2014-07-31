@@ -1022,7 +1022,11 @@ var FormValidator = A.Component.create({
 
                     if (ancestor) {
                         if (ancestor.hasClass(label)) {
-                            target = nextSibling;
+                            if (field.get('type') === 'radio') {
+                                target = ancestor.siblings().pop();
+                            } else {
+                                target = nextSibling;
+                            }
                         }
                         else if (A.FormValidator.isCheckable(target)) {
                             label = ancestor.previous('.' + label);
