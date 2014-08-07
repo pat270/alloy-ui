@@ -5,6 +5,7 @@
 ## @VERSION@
 
 * [AUI-1558](https://issues.liferay.com/browse/AUI-1558) Create unit test for padNumber
+* [AUI-1553](https://issues.liferay.com/browse/AUI-1553) Create unit test for contains
 * [AUI-1551](https://issues.liferay.com/browse/AUI-1551) Create unit test for camelize
 
 ## [2.5.0](https://github.com/liferay/alloy-ui/releases/tag/2.5.0)
