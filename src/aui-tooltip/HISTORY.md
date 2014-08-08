@@ -6,6 +6,12 @@
 
 No registries yet.
 
+## [3.0.0pr1](https://github.com/liferay/alloy-ui/releases/tag/3.0.0pr1)
+
+* [AUI-1310](https://issues.liferay.com/browse/AUI-1310) Make aui-tooltip responsive
+* [AUI-1335](https://issues.liferay.com/browse/AUI-1335) Tooltips should make HTML escaped by default
+* [AUI-1225](https://issues.liferay.com/browse/AUI-1225) Import Bootstrap 3 into a new module and remove Grunt bootstrap task
+
 ## [2.5.0](https://github.com/liferay/alloy-ui/releases/tag/2.5.0)
 
 * [AUI-1163](https://issues.liferay.com/browse/AUI-1163) Remove unnecessary constants
