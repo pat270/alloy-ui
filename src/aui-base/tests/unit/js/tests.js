@@ -8,7 +8,15 @@ YUI.add('aui-base-tests', function(Y) {
             'LorEm-Ipsum-dolor-sit-AMET',
             'Lorem-Ipsum-doLOR. sit-amet +1',
             'lorem-ipsum-dolor-sit-amet, LOREM-ipsum-D&OLOR',
-            'Lorem-ipsum-dolor-sit-amet. lorem-ipsum-dolor-sit-amet, lorem-Ipsum-Dolor-Sit-Amet',
+            'Lorem-ipsum-dolor-sit-amet. lorem-ipsum-dolor-sit-amet, lorem-Ipsum-Dolor-Sit-Amet'
+        ],
+        upperCaseStrings = [
+            'Lorem-Ipsum',
+            'LOREM IPSUM',
+            'LorEmiPsuM'
+        ],
+        mixedStrings = ['ab12CDE345fG67',
+            'LOREM? Ipsum</Dolor-Sit&Amet'
         ];
 
     var Assert = Y.Assert,
@@ -106,6 +114,26 @@ YUI.add('aui-base-tests', function(Y) {
                     Assert.areEqual(paddedLengths.pre, precision);
                     Assert.areEqual(paddedLengths.post, length);
                 }
+            }
+        },
+
+        'should make strings lower case': function() {
+            for (var i = 0; i < upperCaseStrings.length; i++) {
+                var upperCase = upperCaseStrings[i],
+                    lowerCase = Y.Lang.String.toLowerCase(upperCase),
+
+                    Assert.isTrue(Y.Lang.isString(lowerCase));
+                    Assert.isFalse(Y.Lang.isArray(lowerCase));
+                    Assert.areNotEqual(lowerCase, upperCase);
+            }
+
+            for (var j = 0; j < mixedStrings.length; j++) {
+                var mixed = mixedStrings[j],
+                    lowerCase = Y.Lang.String.toLowerCase(mixed); 
+
+                    Assert.isTrue(Y.Lang.isString(lowerCase));
+                    Assert.isFalse(Y.Lang.isNumber(lowerCase));
+                    Assert.areNotEqual(lowerCase, mixed);
             }
         }
     }));
