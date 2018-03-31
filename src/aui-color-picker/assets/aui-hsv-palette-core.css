@@ -23,11 +23,17 @@
 }
 
 .hsv-view-container .form-control-wrapper {
+    display: inline-block;
     padding: 0;
+    width: fit-content;
 }
 
 .hsv-view-container .form-control {
     padding: 3px 5px;
+}
+
+.hsv-view-container .hsv-value {
+    width: 50px;
 }
 
 .hsv-hs-container, .hsv-image-backdrop {

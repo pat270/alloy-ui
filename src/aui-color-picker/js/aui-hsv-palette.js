@@ -93,13 +93,13 @@ var AColor = A.Color,
     HSVPalette = A.Base.create('hsv-palette', A.Widget, [A.WidgetCssClass, A.WidgetToggle], {
         CSS_VALUE_RIGHT_SIDE_CONTAINER: 'col-sm-10 col-xs-10',
 
-        TPL_CONTAINER: '<div class="row ' + CSS_CONTAINER + ' {subClass}"></div>',
+        TPL_CONTAINER: '<div class="' + CSS_CONTAINER + ' {subClass}"></div>',
 
-        TPL_VIEW_CONTAINER: '<div class="' + CSS_VIEW_CONTAINER + '"></div>',
+        TPL_VIEW_CONTAINER: '<div class="' + CSS_VIEW_CONTAINER + ' row"></div>',
 
         TPL_IMAGE_BACKDROP: '<div class="' + CSS_HS_IMAGE_BACKDROP + '"></div>',
 
-        TPL_IMAGE_WRAPPER: '<div class="col-xs-6 ' +
+        TPL_IMAGE_WRAPPER: '<div class="col-md-6 col-sm-12 ' +
             CSS_HS_IMAGE_WRAPPER + '"><div class="' +
             CSS_HS_IMAGE_CONTAINER + '"></div></div>',
 
@@ -109,7 +109,7 @@ var AColor = A.Color,
 
         TPL_HS_THUMB: '<div class="' + CSS_HS_THUMB + '"></div>',
 
-        TPL_VALUE_CONTAINER: '<div class="col-xs-6 ' + CSS_VALUE_CONTAINER + '"><div class="row"></div></div>',
+        TPL_VALUE_CONTAINER: '<div class="col-md-6 col-sm-12 ' + CSS_VALUE_CONTAINER + '"><div class="row"></div></div>',
 
         TPL_VALUE_RIGHT_SIDE_CONTAINER: '<div>' +
             '<div class="row"><div class="col-sm-6 col-xs-6 ' +
