@@ -1,6 +1,6 @@
 {
   "name": "alloy-ui",
-  "version": "3.1.0",
+  "version": "3.1.0-deprecated.40-test",
   "dependencies": {
     "bower": {
       "version": "1.8.2",
