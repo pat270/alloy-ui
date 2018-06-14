@@ -917,7 +917,7 @@ var AColor = A.Color,
                 Lang.sub(
                     instance.TPL_LABEL_VALUE_CONTAINER, {
                         subClass: CSS_LABEL_VALUE_HSV_CONTAINER +
-                            ' autofit-col autofit-col-expand'
+                            ' autofit-col'
                     }
                 )
             );
@@ -926,7 +926,7 @@ var AColor = A.Color,
                 Lang.sub(
                     instance.TPL_LABEL_VALUE_CONTAINER, {
                         subClass: CSS_LABEL_VALUE_RGB_CONTAINER +
-                            ' autofit-col autofit-col-expand'
+                            ' autofit-col'
                     }
                 )
             );
